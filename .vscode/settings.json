@@ -1,15 +1,15 @@
 {
 	"files.exclude": {
-		"**/.git": false,
-		"**/.svn": false,
-		"**/.hg": false,
-		"**/.DS_Store": false,
-		"**/Thumbs.db": false,
-		"**/CVS": false,
-		"**/.o": false,
-		"**/.d": false,
-		"**/*.o": false,
-		"**/*.d": false
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true,
+		"**/CVS": true,
+		"**/.o": true,
+		"**/.d": true,
+		"**/*.o": true,
+		"**/*.d": true
 	},
 	"explorerExclude.backup": {},
 	"git.ignoreLimitWarning": true,
