@@ -25,9 +25,9 @@
 #include "deltaTime.h"
 
 //2560 × 1600
-#define WIDTH 1280
-#define HEIGHT 720
-#define FULL_SCREEN 0
+#define WIDTH 2560
+#define HEIGHT 1600
+#define FULL_SCREEN 1
 #define FRAME_RATE 60
 
 int __currentScreenWidth = 0;
@@ -107,7 +107,7 @@ SDL_Window *Init()
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 
 	SetFrameRate(FRAME_RATE);
-	SetFrameTime(rounding(1000.0f / (float)FRAME_RATE));
+	SetFrameTime(FRAME_RATE);
 	SDL_GetWindowSize(window, &__currentScreenWidth, &__currentScreenHeight);
 	SDL_SetWindowFullscreen(window, FULL_SCREEN);
 	glViewport(0, 0, __currentScreenWidth, __currentScreenHeight);

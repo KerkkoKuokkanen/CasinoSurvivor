@@ -4,7 +4,7 @@
 #include <OpenGL/gl3.h>
 
 //DO NOT CHANGE HERE, USE THE FUNCTION
-static int usedFrame = 17;
+static double usedFrame = 0.5;
 
 void ClearWindow()
 {
@@ -16,19 +16,22 @@ void WindowSwap(SDL_Window *window)
 	SDL_GL_SwapWindow(window);
 }
 
-int	figure_the_delay(clock_t start, clock_t end)
+Uint32 figure_the_delay(Uint64 start, Uint64 freq)
 {
-	double	time;
-	int		ret;
-	time = 0.0;
-	time += (double)(end - start) / CLOCKS_PER_SEC;
-	ret = usedFrame - (int)(time * 1000.0f);
-	if (ret < 0)
-		return (0);
-	return (ret);
+	Uint64 frameWorkTicks = SDL_GetPerformanceCounter() - start;
+	double frameWorkTimeSeconds = (double)frameWorkTicks / (double)freq;
+	double remainingTimeSeconds = usedFrame - frameWorkTimeSeconds;
+	if (remainingTimeSeconds > 0.0)
+	{
+		Uint32 delayMs = (Uint32)(remainingTimeSeconds * 1000.0);
+		if (delayMs > 1)
+			return (delayMs - 1);
+		return (delayMs);
+	}
+	return (0);
 }
 
-void SetFrameTime(int used)
+void SetFrameTime(int fps)
 {
-	usedFrame = used;
+	usedFrame = 1.0 / (double)fps;
 }

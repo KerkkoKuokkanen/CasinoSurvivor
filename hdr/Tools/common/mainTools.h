@@ -5,7 +5,7 @@
 # include <time.h>
 # include "SDL.h"
 
-int	figure_the_delay(clock_t start, clock_t end);
+Uint32 figure_the_delay(Uint64 start, Uint64 freq);
 void ClearWindow();
 void WindowSwap(SDL_Window *window);
 void SetFrameTime(int used);

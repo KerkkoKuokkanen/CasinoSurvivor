@@ -131,7 +131,7 @@ t_Point FloorGrid::TransformPoint(t_Point point)
 void FloorGrid::MouseTest()
 {
 	t_Point point = GetMouseXY();
-	ApplyForce(point, 0.01f, 0.2f);
+	ApplyForce(point, 1.0f * DeltaTime(), 0.2f);
 }
 
 void FloorGrid::Update()

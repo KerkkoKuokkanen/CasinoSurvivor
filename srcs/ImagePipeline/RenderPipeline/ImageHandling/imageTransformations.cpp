@@ -26,8 +26,8 @@ t_iPoint TransformToPixelCoordinates(float x, float y)
 
 t_Point TransformCoordinateToScreenSpace(float x, float y)
 {
-	float widthUnit = 1.0f - GetWidthMinus();
-	float heightUnit = 1.0f - GetHeightMinus();
+	float widthUnit = 1.0f;
+	float heightUnit = 1.0f;
 	float widthScale = widthUnit / __ScreenSpaceUsedWidth;
 	float heightScale = heightUnit / __ScreenSpaceUsedHeight;
 	float wPosition = widthScale * x;
@@ -39,8 +39,8 @@ t_Point TransformCoordinateToScreenSpaceCamera(float x, float y)
 {
 	x = x - __CameraX;
 	y = y - __CameraY;
-	float widthUnit = 1.0f - GetWidthMinus();
-	float heightUnit = 1.0f - GetHeightMinus();
+	float widthUnit = 1.0f;
+	float heightUnit = 1.0f;
 	float widthScale = widthUnit / __ScreenSpaceUsedWidth;
 	float heightScale = heightUnit / __ScreenSpaceUsedHeight;
 	float wPosition = widthScale * x;

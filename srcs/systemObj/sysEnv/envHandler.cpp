@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <thread>
 #include "rigidBodyManager.h"
+#include "audio.h"
 
 SysEnv *currentEnvironment = NULL;
 
@@ -130,6 +131,7 @@ void ClearSysEnv()
 {
 	if (currentEnvironment == NULL)
 		return ;
+	ClearSoundSystem();
 	currentEnvironment->Clear();
 }
 

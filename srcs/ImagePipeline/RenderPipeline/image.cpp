@@ -1,6 +1,5 @@
 
 #include "image.h"
-#include "Textures.h"
 #include "imageTransforms.h"
 
 Image::Image(std::string texture, t_Box rect, float angle, int layer)
@@ -57,13 +56,13 @@ textData Image::GetTextureData()
 
 size_t Image::GetSaveDataSize()
 {
-	size_t dataSize = sizeof(float) * 16 + sizeof(uint64_t) + sizeof(int) * 2;
+	size_t dataSize = sizeof(float) * 17 + sizeof(uint64_t) + sizeof(int) * 2;
 	return (dataSize);
 }
 
 void *Image::CollectSaveData(void *buffer, size_t buffSize, size_t &size)
 {
-	size_t dataSize = sizeof(float) * 16 + sizeof(uint64_t) + sizeof(int) * 2;
+	size_t dataSize = sizeof(float) * 17 + sizeof(uint64_t) + sizeof(int) * 2;
 	size = dataSize;
 	if (dataSize > buffSize)
 		return (NULL);
@@ -86,6 +85,7 @@ void *Image::CollectSaveData(void *buffer, size_t buffSize, size_t &size)
 	memcpy(byteData + offset, &textureData.w, sizeof(float)); offset += sizeof(float);
 	memcpy(byteData + offset, &textureData.h, sizeof(float)); offset += sizeof(float);
 	memcpy(byteData + offset, &textureData.a, sizeof(float)); offset += sizeof(float);
+	memcpy(byteData + offset, &drawDepth, sizeof(float)); offset += sizeof(float);
 	return (buffer);
 }
 

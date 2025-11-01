@@ -26,10 +26,12 @@ void *SystemSaver::CreateImageComponent(void *data, size_t size)
 	float tdx = *(float*)(castData + offset); offset += sizeof(float);
 	float tdy = *(float*)(castData + offset); offset += sizeof(float);
 	float ta = *(float*)(castData + offset); offset += sizeof(float);
+	float dd = *(float*)(castData + offset); offset += sizeof(float);
 	Image *img = new Image(text, {posX, posY, dimX, dimY}, angle, layer);
 	img->SetColor(r, g, b, a);
 	img->SetTransformType(tType);
 	img->SetTextureData(tpx, tpy, tdx, tdy, ta);
+	img->drawDepth = dd;
 	return ((void*)img);
 }
 

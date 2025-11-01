@@ -3,6 +3,7 @@
 # define IMAGE_H
 
 # include "renderSystem.h"
+#include "Textures.h"
 
 struct textData {
 	float x;

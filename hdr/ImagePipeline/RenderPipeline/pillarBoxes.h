@@ -6,7 +6,5 @@
 
 void SetPillarBoxes();
 void SetViewPort();
-float GetHeightMinus();
-float GetWidthMinus();
 
 #endif

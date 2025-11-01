@@ -1,15 +1,17 @@
 
 float deltaTime = 0.0f;
-float timeSpeed = 1.0f;
 
-void SetSpeed(float speed)
+void SetDeltaTime(float time)
 {
-	timeSpeed = speed;
+	if (time > 0.1f)
+		deltaTime = 0.1f;
+	else
+		deltaTime = time;
 }
 
 float DeltaTime()
 {
-	return (deltaTime * timeSpeed);
+	return (deltaTime);
 }
 
 void InitDeltaTime(unsigned int frameRate)

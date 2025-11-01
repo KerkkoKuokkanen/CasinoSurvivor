@@ -6,41 +6,12 @@
 
 #define ASPECT_RATIO 1.77778f
 
-static bool boxesSet = false;
-static float widthRemoval = 0.0f;
-static float heightRemoval = 0.0f;
 static unsigned int screenFrameRate = 0;
 
 static int vpx = 0;
 static int vpy = 0;
 static int vpw = 0;
 static int vph = 0;
-
-static void SetOwnLetterBoxes()
-{
-	int width = __currentScreenWidth;
-	int height = __currentScreenHeight;
-	int targetHeight = rounding((float)width / ASPECT_RATIO);
-	int removedPixels = height - targetHeight;
-	removedPixels = removedPixels / 2.0f;
-	float scale = 2.0f / (float)height;
-	float poisitioning = scale * removedPixels;
-	heightRemoval = poisitioning;
-	widthRemoval = 0.0f;
-}
-
-static void SetOwnPillarBoxes()
-{
-	int width = __currentScreenWidth;
-	int height = __currentScreenHeight;
-	int targetWidth = rounding((float)height * ASPECT_RATIO);
-	int removedPixels = width - targetWidth;
-	removedPixels = removedPixels / 2;
-	float scale = 2.0f / (float)width;
-	float poisitioning = scale * removedPixels;
-	widthRemoval = poisitioning;
-	heightRemoval = 0.0f;
-}
 
 void UpdateGameViewport()
 {
@@ -81,33 +52,6 @@ void SetViewPort()
 void SetPillarBoxes()
 {
 	UpdateGameViewport();
-	if (!__forceAspectRatio)
-		return ;
-	int width = __currentScreenWidth;
-	int height = __currentScreenHeight;
-	float ratio = (float)width / (float)height;
-	if (FAlmostEqual(ASPECT_RATIO, ratio, 0.0001f))
-		return ;
-	if (ratio < ASPECT_RATIO)
-		SetOwnLetterBoxes();
-	else
-		SetOwnPillarBoxes();
-}
-
-void ClearPillarBoxes()
-{
-	widthRemoval = 0.0f;
-	heightRemoval = 0.0f;
-}
-
-float GetHeightMinus()
-{
-	return (heightRemoval);
-}
-
-float GetWidthMinus()
-{
-	return (widthRemoval);
 }
 
 void SetFrameRate(unsigned int frameRate)
