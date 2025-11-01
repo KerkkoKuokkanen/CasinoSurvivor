@@ -80,7 +80,6 @@ class SystemObj
 		std::vector<void*> GetComponents(const std::string &components);
 		void *AddComponent(const std::string component);
 		void *AddComponent(void *component, const std::string name);
-		void ReferenceObject(std::string name, uint64_t key);
 		void Destroy();
 };
 

@@ -5,10 +5,12 @@
 # include "customComponent.h"
 # include "componentRegistry.h"
 # include "image.h"
+# include "floorGrid.h"
 
 class PlayerMovement : public CustomComponent
 {
 	private:
+		FloorGrid *grid = NULL;
 		Image *face = NULL;
 		Image *glasses = NULL;
 		Image *hair = NULL;
@@ -19,6 +21,10 @@ class PlayerMovement : public CustomComponent
 		Image *rightS = NULL;
 		t_Point position = {0.0f, 0.0f};
 		t_Point direction = {0.0f, 0.0f};
+		float cyoteTime = 0.0f;
+		float jumpBoost = 0.0f;
+		int jumped = 0;
+		bool heldDown = false;
 		bool leftSliding = false;
 		bool firstCycle = true;
 		bool pressed = false;

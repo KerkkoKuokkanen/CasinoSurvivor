@@ -35,7 +35,6 @@ class FloorGrid : public CustomComponent
 		void AddForceToPoints();
 		void CalculateForces();
 		t_Point TransformPoint(t_Point point);
-		void MouseTest();
 		void SetColorForGrid(int i, int j, int bar);
 	public:
 		FloorGrid();

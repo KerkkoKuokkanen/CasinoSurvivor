@@ -2,6 +2,7 @@
 #include "player.h"
 #include "keyboard.h"
 #include "deltaTime.h"
+#include "envHandler.h"
 
 #define MAX_SPEED 6.5f
 #define START_X -5.0f
@@ -59,6 +60,11 @@ void PlayerMovement::MovePlayer()
 	t_Point prew = face->position;
 	t_Point diff = {position.x - prew.x, position.y - prew.y};
 	AirMovement();
+	if (grid != NULL)
+	{
+		float sum = fabs(direction.x) + fabs(direction.y);
+		grid->ApplyForce({position.x, position.y - 1.0f}, sum * 0.016f * DeltaTime(), 0.3f);
+	}
 	if (fabs(diff.x) + fabs(diff.y) < 0.01f)
 	{
 		face->position = position;
@@ -118,6 +124,10 @@ void PlayerMovement::Update()
 void PlayerMovement::Start()
 {
 	self->weight = -1.0f;
+	SystemObj *obj = FindSystemObject(7661120866917488122);
+	if (obj == NULL)
+		return ;
+	grid = (FloorGrid*)obj->GetComponent("FloorGrid");
 }
 
 PlayerMovement::~PlayerMovement()

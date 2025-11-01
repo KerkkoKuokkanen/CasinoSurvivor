@@ -128,15 +128,8 @@ t_Point FloorGrid::TransformPoint(t_Point point)
 	return ((t_Point){x, y});
 }
 
-void FloorGrid::MouseTest()
-{
-	t_Point point = GetMouseXY();
-	ApplyForce(point, 1.0f * DeltaTime(), 0.2f);
-}
-
 void FloorGrid::Update()
 {
-	MouseTest();
 	AddForceToPoints();
 	CalculateForces();
 	AssignBoundingBox();
