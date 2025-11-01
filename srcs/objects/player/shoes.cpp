@@ -109,6 +109,13 @@ void PlayerMovement::ShoesAnimation()
 {
 	static float x = 0.0f;
 	float xAdd = (X_ADD / 6.5f) * fabs(direction.x);
+	if (inAir)
+	{
+		shoesInPosition = true;
+		firstCycle = true;
+		x = 0.0f;
+		return ;
+	}
 	if (!pressed)
 	{
 		shoesInPosition = PositionShoes();

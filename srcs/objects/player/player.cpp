@@ -58,6 +58,7 @@ void PlayerMovement::MovePlayer()
 	position.y += direction.y * DeltaTime();
 	t_Point prew = face->position;
 	t_Point diff = {position.x - prew.x, position.y - prew.y};
+	AirMovement();
 	if (fabs(diff.x) + fabs(diff.y) < 0.01f)
 	{
 		face->position = position;
@@ -108,6 +109,7 @@ void PlayerMovement::Update()
 	leftRight = 0;
 	pressed = false;
 	GetInputs();
+	Jump();
 	MovePlayer();
 	ShoesAnimation();
 	HeadAnimation();

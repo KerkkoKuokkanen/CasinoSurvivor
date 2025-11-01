@@ -29,9 +29,11 @@ class PlayerMovement : public CustomComponent
 		void ShoesWhilePressedF(float x);
 		void ShoesWhilePressedB(float x);
 		void MovePlayer();
+		void AirMovement();
 		void GetInputs();
 		void HeadAnimation();
 		void ShoesAnimation();
+		void Jump();
 	public:
 		PlayerMovement();
 		~PlayerMovement();
