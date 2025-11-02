@@ -6,8 +6,8 @@
 # include "componentRegistry.h"
 # include "image.h"
 
-# define GRID_WIDTH 42
-# define GRID_HEIGHT 24
+# define GRID_WIDTH 58
+# define GRID_HEIGHT 28
 # define MAX_FREQUENCY 80000
 
 struct GridPoint {

@@ -102,7 +102,7 @@ void AudioBars::Start()
 {
 	grid = (FloorGrid*)self->GetComponent("FloorGrid");
 	ReserveChannel(RESERVED_CHANNEL);
-	Mix_Volume(RESERVED_CHANNEL, 40);
+	Mix_Volume(RESERVED_CHANNEL, 28);
 	PlayMusic("testmus2");
 }
 

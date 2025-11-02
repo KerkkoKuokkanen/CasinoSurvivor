@@ -8,17 +8,17 @@
 
 FloorGrid::FloorGrid()
 {
-	frequencies = std::vector<float>(21, 0.0f);
+	frequencies = std::vector<float>(29, 0.0f);
 	float ys1 = -0.6f;
 	float ys2 = -0.5f;
-	float ww = 1.2f / GRID_HEIGHT;
+	float ww = 1.2f / 24;
 	for (int i = 0; i < GRID_HEIGHT + 1; i++)
 	{
 		float ydiff = ww * i;
 		for (int j = 0; j < GRID_WIDTH + 1; j++)
 		{
 			float xdiff = ww * j;
-			points[i][j].home = {-1.05f + xdiff, ys1 + ydiff};
+			points[i][j].home = {-1.45f + xdiff, ys1 + ydiff};
 			points[i][j].current = points[i][j].home;
 			points[i][j].atHome = true;
 			points[i][j].force = {0.0f, 0.0f};
@@ -31,7 +31,6 @@ FloorGrid::FloorGrid()
 		{
 			Image *img = new Image("grid", {0.0f, 0.0f, 1.0f, 1.0f}, 0.0f, 1);
 			img->position = {0.0f, 0.0f};
-			img->SetTransformType(n_TransformTypes::NO_TRANSFORM);
 			img->SetColor(1.0f, 1.0f, 1.0f, 0.65f);
 			grid[i][j] = img;
 			grid[i][j]->SetBoundingBox({points[i][j].current, points[i][j + 1].current,
@@ -62,7 +61,7 @@ void FloorGrid::AddForceToPoints()
 	for (AppliedForce f : forces)
 	{
 		float scale = 1.0f / f.radius;
-		for (int i = 0; i < GRID_HEIGHT + 1; i++)
+		for (int i = 1; i < GRID_HEIGHT + 1; i++)
 		{
 			for (int j = 0; j < GRID_WIDTH + 1; j++)
 			{
@@ -163,7 +162,7 @@ void FloorGrid::SetColorForGrid(int i, int j, int bar)
 
 void FloorGrid::GiveFrequencies(std::vector<float> &freq)
 {
-	std::vector<float> temp(freq.begin() + 14, freq.end() - 8);
+	std::vector<float> temp(freq.begin() + 10, freq.end() - 4);
 	for (int i = 0; i < temp.size(); i++)
 	{
 		if (frequencies[i] < temp[i])
@@ -182,7 +181,7 @@ void FloorGrid::GiveFrequencies(std::vector<float> &freq)
 			bar = 23;
 		else if (bar < 0)
 			bar = 0;
-		for (int j = 0; j < 24; j++)
+		for (int j = 0; j < GRID_HEIGHT; j++)
 			SetColorForGrid(i, j, bar);
 	}
 }

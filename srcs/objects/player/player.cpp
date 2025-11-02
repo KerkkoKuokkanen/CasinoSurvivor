@@ -110,6 +110,22 @@ void PlayerMovement::HeadAnimation()
 		x = 0.0f;
 }
 
+void PlayerMovement::CameraMovement()
+{
+	if (cam == NULL)
+		return ;
+	t_Point curPos = cam->GetCameraPosition();
+	if (position.y > 6.8f)
+		curPos.y = fmin((position.y - 6.8f) / (position.y * 0.19f), 2.0f);
+	else
+		curPos.y = 0.0f;
+	if (position.x < -8.6f)
+		curPos.x = fmax(-2.0f, (position.x + 8.6f) / (fabs(position.x) * 0.17f));
+	else
+		curPos.x = 0.0f;
+	cam->SetCameraPosition(curPos.x, curPos.y);
+}
+
 void PlayerMovement::Update()
 {
 	leftRight = 0;
@@ -119,15 +135,18 @@ void PlayerMovement::Update()
 	MovePlayer();
 	ShoesAnimation();
 	HeadAnimation();
+	CameraMovement();
 }
 
 void PlayerMovement::Start()
 {
 	self->weight = -1.0f;
 	SystemObj *obj = FindSystemObject(7661120866917488122);
-	if (obj == NULL)
-		return ;
-	grid = (FloorGrid*)obj->GetComponent("FloorGrid");
+	if (obj)
+		grid = (FloorGrid*)obj->GetComponent("FloorGrid");
+	obj = FindSystemObject(1268932300067704888);
+	if (obj)
+		cam = (Camera*)obj->GetComponent("Camera");
 }
 
 PlayerMovement::~PlayerMovement()

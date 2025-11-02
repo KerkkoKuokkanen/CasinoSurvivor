@@ -6,11 +6,13 @@
 # include "componentRegistry.h"
 # include "image.h"
 # include "floorGrid.h"
+# include "camera.h"
 
 class PlayerMovement : public CustomComponent
 {
 	private:
 		FloorGrid *grid = NULL;
+		Camera *cam = NULL;
 		Image *face = NULL;
 		Image *glasses = NULL;
 		Image *hair = NULL;
@@ -39,6 +41,7 @@ class PlayerMovement : public CustomComponent
 		void GetInputs();
 		void HeadAnimation();
 		void ShoesAnimation();
+		void CameraMovement();
 		void Jump();
 	public:
 		PlayerMovement();

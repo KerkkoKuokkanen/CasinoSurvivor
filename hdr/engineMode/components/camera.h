@@ -22,6 +22,7 @@ class Camera : public CustomComponent
 		void SaveCameraPosition();
 		void SetCameraPosition(float x, float y);
 		void SetCameraZoom(float zoom);
+		t_Point GetCameraPosition() {return((t_Point){x, y});};
 		void EngineUpdate() override;
 };
 
