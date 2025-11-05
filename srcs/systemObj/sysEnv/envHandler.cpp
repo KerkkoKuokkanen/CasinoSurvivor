@@ -29,6 +29,13 @@ void SetCurrentRoom(uint16_t room)
 	currentRoom = room;
 }
 
+void SetSnapSaving(bool saving)
+{
+	if (currentEnvironment == NULL)
+		return ;
+	currentEnvironment->saveSnapShots = saving;
+}
+
 uint16_t GetCurrentRoom()
 {
 	return (currentRoom);

@@ -76,7 +76,16 @@ void PlayerMovement::Jump()
 		direction.y = 15.0f;
 	}
 	else if (cyoteTime >= 0.18f && inAir && jumped == 0)
+	{
 		jumped = 1;
+		if (KeyPressed(SDL_SCANCODE_W))
+		{
+			inAir = true;
+			jumped = 2;
+			direction.y = 15.0f + jumpBoost;
+			jumpBoost = 0.0f;
+		}
+	}
 	if (KeyHeld(SDL_SCANCODE_S) && position.y > BOTTOM_PLAT + 2.0f)
 	{
 		jumpBoost = 1.2f;

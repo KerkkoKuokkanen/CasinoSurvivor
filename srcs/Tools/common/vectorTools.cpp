@@ -61,3 +61,11 @@ float VectorDotProduct(t_Point vec1, t_Point vec2)
 	float ret = vec1.x * vec2.x + vec1.y * vec2.y;
 	return (ret);
 }
+
+float VectorAngle(t_Point vec1, t_Point vec2)
+{
+	float dot = VectorDotProduct(vec1, vec2);
+	float mag1 = VectorMagnitude(vec1);
+	float mag2 = VectorMagnitude(vec2);
+	return (acos(dot / (mag1 * mag2)));
+}

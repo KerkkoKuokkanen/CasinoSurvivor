@@ -137,7 +137,7 @@ void Threads()
 	static std::thread audioThread([]() {
 		while (true) {
 			AudioThread();
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+			std::this_thread::sleep_for(std::chrono::microseconds(10));
 		}
 	});
 	static std::thread snapThread([]() {

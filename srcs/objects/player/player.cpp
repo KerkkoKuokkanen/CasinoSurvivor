@@ -14,16 +14,12 @@ PlayerMovement::PlayerMovement()
 	glasses = new Image("glasses", {START_X, START_Y, 3.6f, 3.6f}, 0.0f, 5);
 	hair = new Image("hair", {START_X, START_Y, 3.6f, 3.6f}, 0.0f, 5);
 	torso = new Image("torso", {START_X, START_Y, 3.6f, 3.6f}, 0.0f, 5);
-	leftH = new Image("handLeft", {START_X, START_Y, 3.6f, 3.6f}, 0.0f, 5);
-	rightH = new Image("handRight", {START_X, START_Y, 3.6f, 3.6f}, 0.0f, 5);
 	leftS = new Image("shoeLeft", {START_X, START_Y, 3.6f, 3.6f}, 0.0f, 5);
 	rightS = new Image("shoeRight", {START_X, START_Y, 3.6f, 3.6f}, 0.0f, 5);
 	face->drawDepth = 1.0f;
 	glasses->drawDepth = 2.0f;
 	hair->drawDepth = 1.5f;
 	torso->drawDepth = 0.5f;
-	leftH->drawDepth = 1.0f;
-	rightH->drawDepth = 0.0f;
 	leftS->drawDepth = 1.0f;
 	rightS->drawDepth = 0.0f;
 	position = {START_X, START_Y};
@@ -70,8 +66,6 @@ void PlayerMovement::MovePlayer()
 		face->position = position;
 		glasses->position = position;
 		hair->position = position;
-		leftH->position = position;
-		rightH->position = position;
 	}
 	else
 	{
@@ -79,8 +73,6 @@ void PlayerMovement::MovePlayer()
 		face->position = newPos;
 		glasses->position = newPos;
 		hair->position = newPos;
-		leftH->position = newPos;
-		rightH->position = newPos;
 	}
 	torso->position = position;
 	if (!pressed)
@@ -101,10 +93,6 @@ void PlayerMovement::HeadAnimation()
 	glasses->angle = angle / 1.5f;
 	hair->angle = angle;
 	torso->position.y += angle / 2.0f;
-	leftH->position.y += angle / 3.0f;
-	rightH->position.y += angle / 3.0f;
-	leftH->position.x += angle / 4.0f;
-	rightH->position.x += angle / 4.0f;
 	x += 14.0f * DeltaTime();
 	if (x > PI * 2)
 		x = 0.0f;
@@ -159,10 +147,6 @@ PlayerMovement::~PlayerMovement()
 		delete glasses;
 	if (torso)
 		delete torso;
-	if (leftH)
-		delete leftH;
-	if (rightH)
-		delete rightH;
 	if (leftS)
 		delete leftS;
 	if (rightS)

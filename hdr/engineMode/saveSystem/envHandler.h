@@ -19,6 +19,7 @@ bool GetControlZ();
 SysEnv *GetCurrentEnvironment();
 uint16_t GetCurrentRoom();
 void SetCurrentRoom(uint16_t room);
+void SetSnapSaving(bool saving);
 
 void UpdateSysEnv();
 void DestroyObject(SystemObj *obj);

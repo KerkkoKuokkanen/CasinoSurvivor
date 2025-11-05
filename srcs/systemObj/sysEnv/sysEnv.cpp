@@ -154,6 +154,8 @@ void SysEnv::LoadObjects(SnapShot &snap, uint16_t room)
 
 bool SysEnv::SaveState()
 {
+	if (!engineMode && !saveSnapShots)
+		return (false);
 	bool ret = envState->TakeSnapShot();
 	return (ret);
 }

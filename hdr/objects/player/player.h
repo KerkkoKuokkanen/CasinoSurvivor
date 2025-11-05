@@ -17,8 +17,6 @@ class PlayerMovement : public CustomComponent
 		Image *glasses = NULL;
 		Image *hair = NULL;
 		Image *torso = NULL;
-		Image *leftH = NULL;
-		Image *rightH = NULL;
 		Image *leftS = NULL;
 		Image *rightS = NULL;
 		t_Point position = {0.0f, 0.0f};
@@ -30,7 +28,6 @@ class PlayerMovement : public CustomComponent
 		bool leftSliding = false;
 		bool firstCycle = true;
 		bool pressed = false;
-		bool inAir = false;
 		bool shoesInPosition = true;
 		int leftRight = 0;
 		bool PositionShoes();
@@ -44,8 +41,10 @@ class PlayerMovement : public CustomComponent
 		void CameraMovement();
 		void Jump();
 	public:
+		bool inAir = false;
 		PlayerMovement();
 		~PlayerMovement();
+		t_Point GetPosition() {return (position);};
 		void Start() override;
 		void Update() override;
 };
