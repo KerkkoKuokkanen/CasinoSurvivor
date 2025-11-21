@@ -9,7 +9,7 @@ void Camera::Init(void *data, size_t size)
 	CreateInputField("y", n_VarType::FLOAT, &y);
 	CreateInputField("zoom", n_VarType::FLOAT, &zoom);
 	CreateInputField("Apply", n_VarType::BOOL, &apply);
-	if (size <= 1)
+	if (data == NULL)
 		return ;
 	char *cast = (char*)data;
 	x = READ_AND_ADVANCE(cast, float);

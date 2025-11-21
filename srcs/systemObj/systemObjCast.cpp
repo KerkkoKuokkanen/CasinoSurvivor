@@ -57,15 +57,6 @@ void *SystemObj::FetchComponentSaveData(void *buffer, size_t bufferSize, size_t 
 		{
 			CustomComponent *cust = (CustomComponent*)components[i].obj;
 			void *ret = cust->CollectSaveData(compSize);
-			if (compSize == 0)
-			{
-				int8_t use = -128;
-				void *saveData = malloc(sizeof(int8_t));
-				char *cast = (char*)saveData;
-				compSize = sizeof(int8_t);
-				memcpy(cast, &use, sizeof(int8_t));
-				return (saveData);
-			}
 			return (ret);
 		}
 	}

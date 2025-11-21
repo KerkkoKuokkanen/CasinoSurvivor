@@ -5,7 +5,7 @@ void ObjectWeight::Init(void *data, size_t size)
 {
 	CreateInputField("Weight", n_VarType::FLOAT, &weight);
 	AddToSaveTracking(&weight, sizeof(float));
-	if (size <= 1)
+	if (data == NULL)
 		return ;
 	weight = *(float*)data;
 }

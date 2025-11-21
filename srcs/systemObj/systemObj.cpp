@@ -77,14 +77,8 @@ void *SystemObj::AddComponent(const std::string component, void *initData, size_
 	add.obj = (void*)CreateComponent(component);
 	CustomComponent *comp = (CustomComponent*)add.obj;
 	comp->self = this;
-	if (initDataSize == sizeof(int8_t))
-	{
-		int8_t checker = *(int8_t*)initData;
-		if (checker == -128)
-			comp->Init(NULL, 0);
-		else
-			comp->Init(initData, initDataSize);
-	}
+	if (initDataSize == 0)
+		comp->Init(NULL, 0);
 	else
 		comp->Init(initData, initDataSize);
 	add.type = component;

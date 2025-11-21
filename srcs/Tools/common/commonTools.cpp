@@ -6,17 +6,23 @@
 
 uint16_t HashData16(const void *data, size_t length)
 {
+	if (length == 0)
+		return (0);
 	uint32_t fullHash = XXH32(data, length, 0);
 	return ((uint16_t)(fullHash & 0xFFFF));
 }
 
 uint32_t HashData32(const void *data, size_t length)
 {
+	if (length == 0)
+		return (0);
 	return (XXH32(data, length, 0));
 }
 
 uint64_t HashData64(const void *data, size_t length)
 {
+	if (length == 0)
+		return (0);
 	return (XXH3_64bits(data, length));
 }
 

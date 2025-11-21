@@ -62,12 +62,6 @@ void CustomComponent::AddToSaveTracking(void *addition, size_t size)
 
 size_t CustomComponent::GetComponentSize()
 {
-	if (initDataSize == 0)
-	{
-		if (self == NULL)
-			return (0);
-		return (sizeof(bool));
-	}
 	return (initDataSize);
 }
 

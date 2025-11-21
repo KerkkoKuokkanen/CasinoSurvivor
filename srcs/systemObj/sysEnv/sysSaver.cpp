@@ -10,10 +10,16 @@ void SystemSaver::AddNewComponentToObject(SystemObj *add, SaveObj &newAddition)
 	SaveObjData addition;
 	size_t sizerTool = 0;
 	addition.compSize = add->FetchComponentDataSize();
-	if (addition.compSize == 0)
-		return ;
 	addition.componentKey = add->FetchComponentUniqueKey();
 	addition.componentType = add->FetchComponentClassType();
+	if (addition.compSize == 0)
+	{
+		addition.hash = 0;
+		addition.data = NULL;
+		newAddition.components.push_back(addition);
+		newAddition.objHash ^= 0;
+		return ;
+	}
 	addition.data = malloc(addition.compSize);
 	void *ret = add->FetchComponentSaveData(addition.data, addition.compSize, sizerTool);
 	if (ret == NULL)
@@ -55,7 +61,7 @@ bool SystemSaver::HandleExistingObject(SaveObjData &existing, SystemObj *check, 
 	size_t fetchSize = FETCH_SIZE;
 	size_t sizerTool = 0;
 	void *ret = check->FetchComponentSaveData(fetcher, fetchSize, sizerTool);
-	if (ret == NULL)
+	if (ret == NULL && sizerTool != 0)
 		printf("sysSaver: dataFetcher was too small, custom components can not be the issue\n");
 	uint32_t hash = HashData32(ret, sizerTool);
 	if (existing.hash != hash)
