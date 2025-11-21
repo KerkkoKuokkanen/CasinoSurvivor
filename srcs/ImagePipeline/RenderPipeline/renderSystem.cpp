@@ -230,6 +230,8 @@ void RenderSystem::DrawOtherObjectsFirst(int i)
 	std::vector<RenderObj*> objs = {};
 	for (auto [key, obj] : renderLayers[i].imagess)
 	{
+		if (obj->drawActive == false)
+			continue ;
 		obj->BeforeDraw();
 		if (obj->OffscreenDetection())
 			continue ;

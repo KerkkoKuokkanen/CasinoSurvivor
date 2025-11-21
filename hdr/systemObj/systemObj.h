@@ -62,25 +62,28 @@ class SystemObj
 		friend SystemObj *CopyObject(SystemObj *source);
 		~SystemObj();
 	public:
-		bool active = true;
-		void *controller = NULL;
-		float weight = 0.0f;
-		std::vector<t_sysComponent> components = {};
+		bool active = true;			//Active for if the components are updated inside the object
+		void *controller = NULL;	//Controller is the environment, top of the chain
+		float weight = 0.0f;		//lower weight objects are updated first
+		std::vector<t_sysComponent> components = {};		//Components of the object
 
-		SystemObj();
-		bool GetDeleting() {return (deleting);};
-		bool GetSaveable();
-		uint16_t GetSaveableRoom();
-		void SetSaveable(uint8_t save, uint16_t room = 0);
-		void ClearSaveable() {saveable = 0;};
-		uint64_t GetSystemObjectKey() {return (uniqueSystemObjKey);};
-		uint64_t SystemObjectKey() {return (uniqueSystemObjKey);};
-		void RemoveComponent(uint32_t id);
-		void *GetComponent(const std::string &component);
-		std::vector<void*> GetComponents(const std::string &components);
-		void *AddComponent(const std::string component);
-		void *AddComponent(void *component, const std::string name);
-		void Destroy();
+		SystemObj();			//Constructor, automatically assigns object to environment
+		bool GetDeleting() {return (deleting);};		//Helper function for internal stuff
+		bool GetSaveable();								//Helper function for internal stuff, Tells if the object is added to save file
+		uint16_t GetSaveableRoom();						//Gets info for what room the object is saved to
+		//Sets the save room manually for the object
+		//room 0 is default for the current room
+		//0 is by deafault the engine room and bypass == true lets you use the 0 value for engine room
+		void SetSaveable(uint8_t save, uint16_t room = 0, bool bypass = false);
+		void ClearSaveable() {saveable = 0;};	//Makes object not saveable anymore
+		uint64_t GetSystemObjectKey() {return (uniqueSystemObjKey);};	//Get the key for the object
+		uint64_t SystemObjectKey() {return (uniqueSystemObjKey);};		//Same function?
+		void RemoveComponent(uint32_t id);					//Remove the component of the given id
+		void *GetComponent(const std::string &component);	//Get the first component matching the name or NULL
+		std::vector<void*> GetComponents(const std::string &components);	//Get all the components matching the name
+		void *AddComponent(const std::string component);				//Add a new component with the component name
+		void *AddComponent(void *component, const std::string name);	//Add already built component with the name
+		void Destroy();		//Destroy the system object
 };
 
 #endif

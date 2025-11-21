@@ -9,6 +9,7 @@
 
 typedef std::tuple<void*, size_t, uint64_t> tracking;
 
+//Variable types for inputfields
 namespace n_VarType
 {
 	enum {
@@ -37,18 +38,20 @@ class CustomComponent
 		std::vector<std::tuple<std::string, int, void*>> inputFields;
 		friend class ObjectEditor;
 	protected:
-		void AddToSave(void *addition, size_t addSize);
-		void RemoveFromSave(void *removed, size_t size);
-		void ClearSaveData();
-		void ClearToSave();
-		void CreateInputField(std::string name, int varType, void *dest);
-		void AddToSaveTracking(void *addition, size_t size);
+		void AddToSave(void *addition, size_t addSize);		//Add a block of data for saving
+		void RemoveFromSave(void *removed, size_t size);	//Remove the block of data from saving
+		void ClearSaveData();			//Clears added data blocks
+		void ClearSaveTracking();				//Clears tracked variables
+		void CreateInputField(std::string name, int varType, void *dest);		//Creates an inputfield in the engine
+		void AddToSaveTracking(void *addition, size_t size);					//Adds variable to be tracked and saved
 	public:
-		uint32_t ownId = 0;
-		SystemObj *self = NULL;
+		bool active = true;						//active: true -> run update, false -> no update
+		float componentWeight = 0.0f;			//component with lower weight is run first inside the system object
+		uint32_t ownId = 0;						//unique id for the component
+		SystemObj *self = NULL;					//Parent system object that has access to all components
 		virtual ~CustomComponent();
-		size_t GetComponentSize();
-		virtual void *CollectSaveData(size_t &size);
+		size_t GetComponentSize();						//Saving function, not useful for engine user
+		virtual void *CollectSaveData(size_t &size);	// --||--
 
 		//Init is called right after the component is created
 		//Should not rely on any other components or try to get components

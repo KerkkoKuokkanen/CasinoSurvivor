@@ -31,7 +31,6 @@ HDR = $(addprefix -I,$(AUTO_HDR_DIRS)) $(FRAMEWORK_HDR_FLAGS)
 
 # Compilation flags
 FLAGS = -std=c++17 -I/opt/homebrew/Cellar/glm/1.0.1/include -g -DGL_SILENCE_DEPRECATION -fsanitize=address
-CGFLAGS = 
 
 # Framework and library includes
 INCLUDES = -I./frameworks/SDL2.framework/Versions/A/Headers \
@@ -58,7 +57,7 @@ all: $(NAME)
 
 # Link the program
 $(NAME): $(OBJ)
-	@g++ $(FLAGS) $(CGFLAGS) $(FRAMEWORKS) $(OBJ) $(LIBTESS_PATH) -lm -lz -o $(NAME)
+	@g++ $(FLAGS) $(FRAMEWORKS) $(OBJ) $(LIBTESS_PATH) -lm -lz -o $(NAME)
 
 # Compile C++ files to object files
 %.o: %.cpp

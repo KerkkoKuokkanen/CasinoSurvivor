@@ -13,6 +13,12 @@ static int vpy = 0;
 static int vpw = 0;
 static int vph = 0;
 
+std::tuple<int, int, int, int> GetViewPortDimentions()
+{
+	std::tuple<int, int, int, int> ret = {vpx, vpy, vpw, vph};
+	return (ret);
+}
+
 void UpdateGameViewport()
 {
 	float screenWidth = (float)__currentScreenWidth;

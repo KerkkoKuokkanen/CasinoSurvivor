@@ -6,5 +6,6 @@
 
 void SetPillarBoxes();
 void SetViewPort();
+std::tuple<int, int, int, int> GetViewPortDimentions();
 
 #endif

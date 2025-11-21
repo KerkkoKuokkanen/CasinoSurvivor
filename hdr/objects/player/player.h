@@ -21,6 +21,7 @@ class PlayerMovement : public CustomComponent
 		Image *rightS = NULL;
 		t_Point position = {0.0f, 0.0f};
 		t_Point direction = {0.0f, 0.0f};
+		t_Point extraForces = {0.0f, 0.0f};
 		float cyoteTime = 0.0f;
 		float jumpBoost = 0.0f;
 		int jumped = 0;
@@ -44,6 +45,7 @@ class PlayerMovement : public CustomComponent
 		bool inAir = false;
 		PlayerMovement();
 		~PlayerMovement();
+		void ApplyXForce(float force);
 		t_Point GetPosition() {return (position);};
 		void Start() override;
 		void Update() override;

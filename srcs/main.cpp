@@ -7,6 +7,7 @@
 #include "envHandler.h"
 #include "objBar.h"
 #include "deltaTime.h"
+#include "image.h"
 
 SDL_Window *window = NULL;
 
@@ -19,6 +20,9 @@ void Utility()
 
 void MainLoop()
 {
+	/* SystemObj *obj = new SystemObj();
+	obj->AddComponent("ObjBar");
+	obj->SetSaveable(true, 0); */
 	const Uint64 freq = SDL_GetPerformanceFrequency();
 	Uint64 start = SDL_GetPerformanceCounter(), end = SDL_GetPerformanceCounter();
 	while(true)

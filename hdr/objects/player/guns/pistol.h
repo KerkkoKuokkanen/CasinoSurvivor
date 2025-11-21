@@ -6,6 +6,8 @@
 # include "componentRegistry.h"
 # include "image.h"
 # include "player.h"
+# include "floorGrid.h"
+# include "bulletManager.h"
 
 class Pistol : public CustomComponent
 {
@@ -14,9 +16,12 @@ class Pistol : public CustomComponent
 		uint32_t damage = 4;
 		float fireRate = 0.33f;
 		float recharge = 0.0f;
+		float recoil = 0.0f;
 		Image *pistol = NULL;
 		Image *hand1 = NULL;
 		Image *hand2 = NULL;
+		FloorGrid *grid = NULL;
+		BulletManager *bullets = NULL;
 		PlayerMovement *player = NULL;
 		void PositionPistol();
 		bool AnglePistol();
@@ -26,6 +31,7 @@ class Pistol : public CustomComponent
 		void FullPosition();
 		void Shooting();
 		void ShootingAnimation();
+		void CreateBullet();
 		bool shooting = false;
 		t_Point shootingForce = {0.0f, 0.0f};
 		float cycle = 0.0f;

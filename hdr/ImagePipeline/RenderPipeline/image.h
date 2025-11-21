@@ -24,7 +24,6 @@ class Image : public RenderObj
 		t_BoundingB bBox = {{0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}};
 		bool bBoxSet = false;
 	public:
-		bool active = true;
 		t_Point position = {0.0f, 0.0f};
 		t_Point dimentions = {0.0f, 0.0f};
 		float angle = 0.0f;

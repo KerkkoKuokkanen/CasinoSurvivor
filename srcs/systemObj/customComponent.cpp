@@ -5,18 +5,6 @@
 
 void CustomComponent::ClearSaveData()
 {
-	for (int i = 0; i < saveTracking.size(); i++)
-	{
-		void *data = std::get<0>(saveTracking[i]);
-		if (data != NULL)
-			free(data);
-	}
-	saveTracking.clear();
-	initDataSize = 0;
-}
-
-void CustomComponent::ClearToSave()
-{
 	size_t size = 0;
 	for (int i = 0; i < saveTracking.size(); i++)
 	{
@@ -25,6 +13,16 @@ void CustomComponent::ClearToSave()
 		if (data != NULL)
 			free(data);
 	}
+	saveTracking.clear();
+	initDataSize -= size;
+}
+
+void CustomComponent::ClearSaveTracking()
+{
+	size_t size = 0;
+	for (int i = 0; i < saveTrack.size(); i++)
+		size += std::get<1>(saveTrack[i]);
+	saveTrack.clear();
 	initDataSize -= size;
 }
 
@@ -110,6 +108,8 @@ void CustomComponent::CreateInputField(std::string name, int varType, void *dest
 CustomComponent::~CustomComponent()
 {
 	ClearSaveData();
+	saveTrack.clear();
+	initDataSize = 0;
 	if (self != NULL)
 		self->RemoveComponent(ownId);
 }

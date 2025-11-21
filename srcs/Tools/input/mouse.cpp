@@ -2,6 +2,7 @@
 #include "mouse.h"
 #include "screen.h"
 #include "imageTransforms.h"
+#include "pillarBoxes.h"
 
 int mouseX = 0;
 int mouseY = 0;
@@ -14,14 +15,35 @@ int mouseMiddle = 0;
 int mouse4 = 0;
 int mouse5 = 0;
 
+static int max(int a, int b)
+{
+	if (a > b)
+		return a;
+	return b;
+}
+
+static int min(int a, int b)
+{
+	if (a < b)
+		return a;
+	return b;
+}
+
 t_Point GetMouseXY()
 {
-	float unitX = 2.0f / (float)__currentScreenWidth;
-	float unitY = 2.0f / (float)__currentScreenHeight;
+	std::tuple<int, int, int, int> dims = GetViewPortDimentions();
+	int vpx = std::get<0>(dims);
+	int vpy = std::get<1>(dims);
+	int width = std::get<2>(dims);
+	int heigh = std::get<3>(dims);
+	int mouse_x = max(mouseX - vpx, 0);
+	int mouse_y = max(mouseY - vpy, 0);
+	float unitX = 2.0f / (float)width;
+	float unitY = 2.0f / (float)heigh;
 
 	t_Point ret;
-	ret.x = unitX * (float)mouseX - 1.0f;
-	ret.y = (unitY * (float)mouseY - 1.0f) * (-1.0f);
+	ret.x = unitX * (float)mouse_x - 1.0f;
+	ret.y = (unitY * (float)mouse_y - 1.0f) * (-1.0f);
 	ret.x *= 10.0f;
 	ret.y *= 10.0f;
 	return (ret);

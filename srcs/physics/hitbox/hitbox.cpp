@@ -117,14 +117,14 @@ void Hitbox::SetCollisionNumber(uint32_t collisionNumber)
 
 void Hitbox::IgnoreCollisionNumber(uint32_t collision)
 {
-	ClearToSave();
+	ClearSaveTracking();
 	ignored.push_back(collision);
 	AddToSave(ignored.data(), sizeof(uint32_t) * ignored.size());
 }
 
 void Hitbox::ClearIgnoredCollisions()
 {
-	ClearToSave();
+	ClearSaveTracking();
 	ignored.clear();
 }
 

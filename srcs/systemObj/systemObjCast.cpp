@@ -99,26 +99,32 @@ void SystemObj::UpdateSystemObj()
 {
 	if (EngineModeOn())
 		return ;
+	std::vector<t_sysComponent*> objs = {};
 	for (int i = 0; i < components.size(); i++)
 	{
-		switch (components[i].classType)
+		if (components[i].classType == n_ComponentTypes::IMAGE_CLASS ||
+			components[i].classType == n_ComponentTypes::NO_CLASS ||
+			components[i].classType == n_ComponentTypes::STRUCTURE_CLASS)
+			continue ;
+		objs.push_back(&components[i]);
+	}
+	std::sort(objs.begin(), objs.end(),
+				[](const t_sysComponent *a, const t_sysComponent *b) {
+					CustomComponent *obj1 = (CustomComponent*)a->obj;
+					CustomComponent *obj2 = (CustomComponent*)b->obj;
+					return obj1->componentWeight < obj2->componentWeight;
+				});
+	for (t_sysComponent *comp : objs)
+	{
+		CustomComponent *cust = (CustomComponent*)comp->obj;
+		if (comp->started == false)
 		{
-			case n_ComponentTypes::IMAGE_CLASS:
-				break ;
-			case n_ComponentTypes::STRUCTURE_CLASS:
-				break ;
-			default :
-			{
-				CustomComponent *cust = (CustomComponent*)components[i].obj;
-				if (components[i].started == false)
-				{
-					cust->Start();
-					components[i].started = true;
-				}
-				cust->Update();
-				break ;
-			}
+			cust->Start();
+			comp->started = true;
 		}
+		if (cust->active == false)
+			continue ;
+		cust->Update();
 	}
 }
 

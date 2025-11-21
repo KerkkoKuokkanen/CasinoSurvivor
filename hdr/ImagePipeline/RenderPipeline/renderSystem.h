@@ -44,6 +44,7 @@ class RenderObj
 		void AddToRenderSystem(int layer);
 		void ChangeLayer(int layer);
 	public:
+		float weight = 0.0f;
 		uint8_t renderType = 0;
 		uint32_t id = 0;
 		virtual void SetDrawY() {};

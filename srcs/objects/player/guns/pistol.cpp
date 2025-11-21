@@ -6,16 +6,17 @@
 #include "deltaTime.h"
 #include "commonTools.h"
 #include "audio.h"
+#include "envHandler.h"
 
 Pistol::Pistol()
 {
-	pistol = new Image("pistolWHands", {0.0f, 0.0f, 1.1f, 1.1f}, 0.0f, 5);
+	pistol = new Image("pistolJust", {-5.0f, 0.0f, 1.5f, 1.5f}, 0.0f, 5);
 	pistol->drawDepth = 20.0f;
 	pistol->SetColor(0.7f, 0.7f, 0.7f, 1.0f);
-	hand1 = new Image("pistolHL", {0.0f, 0.0f, 1.1f, 1.1f}, 0.0f, 5);
-	hand1->drawDepth = 21.0f;
-	hand2 = new Image("pistolHR", {0.0f, 0.0f, 1.1f, 1.1f}, 0.0f, 5);
-	hand2->drawDepth = 22.0f;
+	hand1 = new Image("pistolHL", {-5.0f, 0.0f, 1.5f, 1.5f}, 0.0f, 5);
+	hand1->drawDepth = 22.0f;
+	hand2 = new Image("pistolHR", {-5.0f, 0.0f, 1.5f, 1.5f}, 0.0f, 5);
+	hand2->drawDepth = 21.0f;
 }
 
 Pistol::~Pistol()
@@ -30,14 +31,20 @@ Pistol::~Pistol()
 
 void Pistol::Start()
 {
+	SystemObj *obj = FindSystemObject(17206662188527305259LU);
+	if (obj)
+		grid = (FloorGrid*)obj->GetComponent("FloorGrid");
 	player = (PlayerMovement*)self->GetComponent("PlayerMovement");
+	obj = FindSystemObject(6302736476082374709LU);
+	if (obj)
+		bullets = (BulletManager*)obj->GetComponent("BulletManager");
 }
 
 void Pistol::PositionPistol()
 {
 	t_Point position = player->GetPosition();
-	position.x += 1.25f;
-	position.y += 0.5f;
+	position.x += 1.1f;
+	position.y += 0.6f;
 	pistol->position = position;
 	hand1->position = position;
 	hand2->position = position;
@@ -51,7 +58,7 @@ void Pistol::PistolAnglePosition()
 	float x = fabs(angle);
 	float y = -(angle * angle) + PI * fabs(angle);
 	pos.x -= x * 0.4f;
-	pos.y += y * multi * 0.5f;
+	pos.y += y * multi * 0.4f;
 	pistol->position = pos;
 	hand1->position = pos;
 	hand2->position = pos;
@@ -59,13 +66,17 @@ void Pistol::PistolAnglePosition()
 
 t_Point Pistol::GetMousePoint()
 {
-	float r = 6.0f;
+	float r = 2.0f;
 	t_Point mouse = GetMouseXY();
 	t_Point position = player->GetPosition();
 	t_Point dir = {mouse.x - position.x, mouse.y - position.y};
 	if (fabs(dir.x) + fabs(dir.y) < 0.6f)
 		return (t_Point){r, 0.0f};
-	dir = VectorNormalize(dir);
+	float mag = VectorMagnitude(dir);
+	if (mag > r)
+		r = mag;
+	dir.x /= mag;
+	dir.y /= mag;
 	if (dir.x < 0.0f)
 		dir.x = -dir.x;
 	dir.x = position.x + dir.x * r;
@@ -77,8 +88,6 @@ bool Pistol::AnglePistol()
 {
 	t_Point mouse = GetMousePoint();
 	t_Point pos = pistol->position;
-	pos.x -= 0.5f;
-	pos.y += 0.3f;
 	t_Point dir = {mouse.x - pos.x, mouse.y - pos.y};
 	dir = VectorNormalize(dir);
 	shootDir = dir;
@@ -138,8 +147,30 @@ void Pistol::ShootingAnimation()
 	cycle += 15.0f * DeltaTime();
 }
 
+//209, 139, 48
+void Pistol::CreateBullet()
+{
+	t_Point pos = pistol->position;
+	t_Point mouse = GetMousePoint();
+	t_Point dir = {mouse.x - pos.x, mouse.y - pos.y};
+	if (mouse.x <= pos.x)
+		dir.x = 0.0f;
+	dir = VectorNormalize(dir);
+	t_Point bulletPos = {pos.x + dir.x * 0.5f, pos.y + dir.y * 0.5f};
+	recoil = fmax(recoil, 0.0f);
+	recoil = (recoil > 0.3f) ? 0.3f : recoil;
+	float usedRec = recoil * 0.5f;
+	float angle = (rand() % 2 == 0) ? -usedRec * float_rand() : usedRec * float_rand();
+	dir = VectorRotate(dir, angle);
+	if (bullets)
+		bullets->CreateBullet(bulletPos, dir, 10.0f, {0.76f, 0.53f, 0.25f, 1.0f});
+	recoil = recoil + 0.4f;
+}
+
 void Pistol::Shooting()
 {
+	if (recoil > 0.0f)
+		recoil -= DeltaTime();
 	if (recharge > 0.0f)
 		recharge -= DeltaTime();
 	if (MouseKeyHeld(n_MouseKeys::MOUSE_LEFT))
@@ -149,13 +180,17 @@ void Pistol::Shooting()
 	shooting = false;
 	if (MouseKeyHeld(n_MouseKeys::MOUSE_LEFT) && recharge <= 0.0f)
 	{
+		player->ApplyXForce(-4.2f);
 		audioKey = RePlaySound("pistol", 10.0f, 0, audioKey);
 		FullPosition();
+		if (grid)
+			grid->ApplyForce(pistol->position, 0.05f, 0.2f);
 		t_Point dir = VectorRotate({1.0f, 0.0f}, pistol->angle);
 		float multi = 0.6f + float_rand() * 0.1f;
 		shootingForce = {-dir.x * multi, -dir.y * multi};
 		recharge = fireRate;
 		cycle = 0.0f;
+		CreateBullet();
 	}
 	ShootingAnimation();
 }

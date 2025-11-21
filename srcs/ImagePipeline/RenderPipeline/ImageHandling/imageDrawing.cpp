@@ -156,6 +156,8 @@ void RenderSystem::TransformSprites(int i, std::vector<t_ImgDrawObj> &objs)
 	{
 		t_ImgDrawObj add;
 		Image *img = (Image*)obj->GetImageComponent();
+		if (img->drawActive == false)
+			continue ;
 		add.depth = img->drawDepth;
 		t_Point pos = img->position;
 		t_Point dim = {img->dimentions.x * 0.5f, img->dimentions.y * 0.5f};

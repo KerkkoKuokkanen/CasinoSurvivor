@@ -14,6 +14,10 @@ struct Bullet {
 	t_Point dir;
 	float lifeTime;
 	bool active;
+	float speed;
+	unsigned int name;
+	float size;
+	int damage;
 };
 
 class BulletManager : public CustomComponent
@@ -21,11 +25,12 @@ class BulletManager : public CustomComponent
 	private:
 		Bullet bullets[MAX_BULLETS] = {0};
 		int FindFreeIndex();
+		bool bulletOutOfBound(t_Point pos);
 	public:
 		BulletManager();
 		~BulletManager();
 		void Start() override;
-		void CreateBullet(t_Point pos, t_Point dir);
+		void CreateBullet(t_Point pos, t_Point dir, float speed, t_Box color);
 		void Update() override;
 };
 

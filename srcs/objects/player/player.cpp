@@ -3,10 +3,12 @@
 #include "keyboard.h"
 #include "deltaTime.h"
 #include "envHandler.h"
+#include <cmath>
 
 #define MAX_SPEED 6.5f
 #define START_X -5.0f
 #define START_Y -1.35f
+#define DAMPING std::pow(0.9, 60)
 
 PlayerMovement::PlayerMovement()
 {
@@ -41,7 +43,7 @@ void PlayerMovement::GetInputs()
 		leftRight = 1;
 	}
 	if (direction.x * x < 0.0f)
-		direction.x *= 0.8f;
+		direction.x *= 0.8f * DeltaTime();
 	direction.x += x * DeltaTime();
 	if (direction.x < -MAX_SPEED)
 		direction.x = -MAX_SPEED;
@@ -51,8 +53,8 @@ void PlayerMovement::GetInputs()
 
 void PlayerMovement::MovePlayer()
 {
-	position.x += direction.x * DeltaTime();
-	position.y += direction.y * DeltaTime();
+	position.x += direction.x * DeltaTime() + extraForces.x * DeltaTime();
+	position.y += direction.y * DeltaTime() + extraForces.y * DeltaTime();
 	t_Point prew = face->position;
 	t_Point diff = {position.x - prew.x, position.y - prew.y};
 	AirMovement();
@@ -77,10 +79,12 @@ void PlayerMovement::MovePlayer()
 	torso->position = position;
 	if (!pressed)
 	{
-		direction.x *= 0.9f;
+		direction.x *= std::pow(DAMPING, DeltaTime());
 		if (fabs(direction.x) < 0.1f)
 			direction.x = 0.0f;
 	}
+	extraForces.x *= std::pow(DAMPING, DeltaTime());
+	extraForces.y *= std::pow(DAMPING, DeltaTime());
 }
 
 void PlayerMovement::HeadAnimation()
@@ -128,13 +132,18 @@ void PlayerMovement::Update()
 
 void PlayerMovement::Start()
 {
-	self->weight = -1.0f;
-	SystemObj *obj = FindSystemObject(7661120866917488122);
+	componentWeight = -1.0f;
+	SystemObj *obj = FindSystemObject(17206662188527305259LU);
 	if (obj)
 		grid = (FloorGrid*)obj->GetComponent("FloorGrid");
-	obj = FindSystemObject(1268932300067704888);
+	obj = FindSystemObject(4874219225160765108LU);
 	if (obj)
 		cam = (Camera*)obj->GetComponent("Camera");
+}
+
+void PlayerMovement::ApplyXForce(float force)
+{
+	extraForces.x += force;
 }
 
 PlayerMovement::~PlayerMovement()

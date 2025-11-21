@@ -192,9 +192,9 @@ uint16_t SystemObj::GetSaveableRoom()
 	return (room);
 }
 
-void SystemObj::SetSaveable(uint8_t save, uint16_t room)
+void SystemObj::SetSaveable(uint8_t save, uint16_t room, bool bypass)
 {
-	if (room == 0)
+	if (room == 0 && !bypass)
 		room = GetCurrentRoom();
 	saveable = 0;
 	saveable |= (uint32_t)room << 16;
