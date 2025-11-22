@@ -97,7 +97,7 @@ void BulletManager::Update()
 			continue ;
 		}
 		bullets[i].pos.x += bullets[i].dir.x * bullets[i].speed * DeltaTime();
-		bullets[i].pos.y += bullets[i].dir.y * bullets[i].speed * DeltaTime();
+		bullets[i].pos.y += bullets[i].dir.y * bullets[i].speed * DeltaTime() * 1.667f;
 		bullets[i].img->position = bullets[i].pos;
 	}
 }

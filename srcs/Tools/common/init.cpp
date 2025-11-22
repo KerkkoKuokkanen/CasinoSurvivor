@@ -25,9 +25,9 @@
 #include "deltaTime.h"
 
 //2560 × 1600
-#define WIDTH 2560
-#define HEIGHT 1600
-#define FULL_SCREEN 1
+#define WIDTH 1280
+#define HEIGHT 720
+#define FULL_SCREEN 0
 #define FRAME_RATE 60
 
 int __currentScreenWidth = 0;

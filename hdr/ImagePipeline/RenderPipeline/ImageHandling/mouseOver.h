@@ -4,8 +4,9 @@
 
 # include <SDL2/SDL.h>
 # include "box.h"
+# include "image.h"
 
-bool MouseOverSprite(SDL_Surface *sur, t_Box dest);
+bool MouseOverImage(Image *img);
 bool MouseOverBoundingBox(t_BoundingB &box);
 bool MouseOverBox(t_Box &box);
 

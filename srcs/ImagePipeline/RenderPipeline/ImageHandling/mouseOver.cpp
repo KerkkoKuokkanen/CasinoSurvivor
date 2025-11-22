@@ -1,10 +1,37 @@
 
 #include "mouseOver.h"
 #include "mouse.h"
+#include "Textures.h"
 #include "screen.h"
+#include <math.h>
 
-bool MouseOverSprite(SDL_Surface *sur, t_Box dest)
+bool MouseOverImage(Image *img)
 {
+	t_Texture tex = GetTextureGLData(img->GetTexure());
+	SDL_Surface *sur = tex.sur;
+	if (sur == NULL)
+		return (false);
+	t_Point mous = GetMouseXY();
+	mous.y *= (9.0f / 16.0f);
+	float dx = img->dimentions.x * 0.5f;
+	float dy = img->dimentions.y * 0.5f;
+	t_Point pos = {img->position.x - dx, img->position.y * (9.0f / 16.0f) - dy};
+	float usex = mous.x - pos.x;
+	float usey = mous.y - pos.y;
+	if (usey < 0.0f || usey > img->dimentions.y)
+		return (false);
+	usey = fabs(usey - img->dimentions.y);
+	float scaleX = (float)sur->w / img->dimentions.x;
+	float scaleY = (float)sur->h / img->dimentions.y;
+	int x = (int)roundf(scaleX * usex);
+	int y = (int)roundf(scaleY * usey);
+	uint32_t *pixels = (uint32_t*)sur->pixels;
+	if (x < 0 || x >= sur->w)
+		return (false);
+	if (y < 0 || y >= sur->h)
+		return (false);
+	if (pixels[(y * sur->w) + x] != 0)
+		return (true);
 	return (false);
 }
 
@@ -29,7 +56,7 @@ static bool CheckInsideShape(t_Point up, t_Point left, t_Point down, t_Point rig
 
 bool MouseOverBoundingBox(t_BoundingB &box)
 {
-	t_Point xy =  GetMouseXY();
+	t_Point xy = GetMouseXY();
 	if (CheckInsideShape(box.leftTop, box.leftBottom, box.rightBottom, box.rightTop, xy))
 		return (true);
 	return (false);
@@ -37,7 +64,7 @@ bool MouseOverBoundingBox(t_BoundingB &box)
 
 bool MouseOverBox(t_Box &box)
 {
-	t_Point xy =  GetMouseXY();
+	t_Point xy = GetMouseXY();
 	if (box.x < xy.x && (box.x + box.w) > xy.x)
 	{
 		if (box.y < xy.y && (box.y + box.h) > xy.y)
