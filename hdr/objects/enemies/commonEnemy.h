@@ -3,20 +3,29 @@
 # define COMMON_ENEMY_H
 
 # include "box.h"
+# include "enemyData.h"
 # include <vector>
 
 class CommonEnemy
 {
-	protected:
-		int health = 0;
-		t_Box hitbox = {0.0f, 0.0f, 0.0f, 0.0f};
-		std::vector<unsigned int> knownBullets = {};
 	public:
+		bool active = true;
+		int health = 0;
+		int type;
+		float speed = 1.0f;
+		t_Box hitbox = {0.0f, 0.0f, 0.0f, 0.0f};
+		t_Point position = {0.0f, 0.0f};
+		std::vector<unsigned int> knownBullets = {};
 		// 0 -> no hit
 		// 1 -> hit
 		// 2 -> dead
-		int ApplyDamage(t_Point pos, float size, int damage, unsigned int name);
+		int ApplyDamage(t_Point pos, float size, int damage, unsigned int name, bool multiHit = false);
 		virtual void KillEnemy() {};
+		virtual void Update() {};
+		virtual void Position(float x, float y) {};
+		virtual void EnemyHit(int damage, t_Point pos, unsigned int name) {};
+		virtual void Attack() {};
+		virtual ~CommonEnemy() {};
 };
 
 #endif

@@ -3,6 +3,8 @@
 # define CUSTOM_COMPONENT_H
 
 # include "systemObj.h"
+# include "deltaTime.h"
+# include "commonTools.h"
 
 # define DEFAULT_SAVE_SIZE 256
 # define READ_AND_ADVANCE(ptr, type) (*reinterpret_cast<type*>(ptr)); ptr += sizeof(type);

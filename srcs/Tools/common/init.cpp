@@ -23,11 +23,12 @@
 #include "screen.h"
 #include <thread>
 #include "deltaTime.h"
+#include "vectorTools.h"
 
 //2560 × 1600
-#define WIDTH 1280
-#define HEIGHT 720
-#define FULL_SCREEN 0
+#define WIDTH 2560
+#define HEIGHT 1600
+#define FULL_SCREEN 1
 #define FRAME_RATE 60
 
 int __currentScreenWidth = 0;
@@ -137,7 +138,7 @@ void Threads()
 	static std::thread audioThread([]() {
 		while (true) {
 			AudioThread();
-			std::this_thread::sleep_for(std::chrono::microseconds(10));
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
 	});
 	static std::thread snapThread([]() {
@@ -151,6 +152,7 @@ void Threads()
 void InitSetup(Shader *shader)
 {
 	InitDeltaTime(FRAME_RATE);
+	InitRandSinCos();
 	Threads();
 	InitAudio();
 	InitShapes(shader);

@@ -8,8 +8,20 @@
 #include "audio.h"
 #include "envHandler.h"
 
+//153, 153, 153
+//102, 102, 102
+//181, 181, 181
+//46, 46, 46
+//227, 122, 30
+//227, 150, 27
 Pistol::Pistol()
 {
+	colors.push_back({0.6f, 0.6f, 0.6f, 1.0f});
+	colors.push_back({0.4f, 0.4f, 0.4f, 1.0f});
+	colors.push_back({0.71f, 0.71f, 0.71f, 1.0f});
+	colors.push_back({0.18f, 0.18f, 0.18f, 1.0f});
+	colors.push_back({0.89f, 0.48f, 0.12f, 1.0f});
+	colors.push_back({0.89f, 0.59f, 0.11f, 1.0f});
 	pistol = new Image("pistolJust", {-5.0f, 0.0f, 1.5f, 1.5f}, 0.0f, 5);
 	pistol->drawDepth = 20.0f;
 	pistol->SetColor(0.7f, 0.7f, 0.7f, 1.0f);
@@ -38,13 +50,15 @@ void Pistol::Start()
 	obj = FindSystemObject(6302736476082374709LU);
 	if (obj)
 		bullets = (BulletManager*)obj->GetComponent("BulletManager");
+	obj = FindSystemObject(10158550851708924347LU);
+	parts = (Particles*)obj->GetComponent("Particles");
 }
 
 void Pistol::PositionPistol()
 {
 	t_Point position = player->GetPosition();
-	position.x += 1.1f;
-	position.y += 0.6f;
+	position.x += 1.0f;
+	position.y += 0.34f;
 	pistol->position = position;
 	hand1->position = position;
 	hand2->position = position;
@@ -58,7 +72,7 @@ void Pistol::PistolAnglePosition()
 	float x = fabs(angle);
 	float y = -(angle * angle) + PI * fabs(angle);
 	pos.x -= x * 0.4f;
-	pos.y += y * multi * 0.4f;
+	pos.y += y * multi * 0.26f;
 	pistol->position = pos;
 	hand1->position = pos;
 	hand2->position = pos;
@@ -147,7 +161,6 @@ void Pistol::ShootingAnimation()
 	cycle += 15.0f * DeltaTime();
 }
 
-//209, 139, 48
 void Pistol::CreateBullet()
 {
 	t_Point pos = pistol->position;
@@ -163,7 +176,10 @@ void Pistol::CreateBullet()
 	float angle = (rand() % 2 == 0) ? -usedRec * float_rand() : usedRec * float_rand();
 	dir = VectorRotate(dir, angle);
 	if (bullets)
+	{
+		parts->AddParticles({bulletPos.x - 0.25f, bulletPos.y}, 0.1f, dir, 0.3f, colors, 3.0f, 6.0f, 20, "everyColor", 0.025f, 0.05f, 0.12f, 0.18f, 0.0f);
 		bullets->CreateBullet(bulletPos, dir, 10.0f, {0.76f, 0.53f, 0.25f, 1.0f});
+	}
 	recoil = recoil + 0.4f;
 }
 
@@ -184,7 +200,7 @@ void Pistol::Shooting()
 		audioKey = RePlaySound("pistol", 10.0f, 0, audioKey);
 		FullPosition();
 		if (grid)
-			grid->ApplyForce(pistol->position, 0.05f, 0.2f);
+			grid->ApplyForce(pistol->position, 0.05f, 0.3f);
 		t_Point dir = VectorRotate({1.0f, 0.0f}, pistol->angle);
 		float multi = 0.6f + float_rand() * 0.1f;
 		shootingForce = {-dir.x * multi, -dir.y * multi};

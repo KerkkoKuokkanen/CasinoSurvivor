@@ -23,5 +23,5 @@ void Platform::Update()
 	textData dat = img->GetTextureData();
 	if (dat.x > 10000.0f)
 		dat.x = 0.0f;
-	img->SetTextureData(dat.x - 0.0015f, dat.y, dat.w, dat.h, dat.a);
+	img->SetTextureData(dat.x - 0.08f * DeltaTime(), dat.y, dat.w, dat.h, dat.a);
 }

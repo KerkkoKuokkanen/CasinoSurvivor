@@ -45,7 +45,9 @@ t_Point GetMouseXY()
 	ret.x = unitX * (float)mouse_x - 1.0f;
 	ret.y = (unitY * (float)mouse_y - 1.0f) * (-1.0f);
 	ret.x *= 10.0f;
-	ret.y *= 10.0f;
+	ret.y *= 5.625f;
+	ret.x += __CameraX;
+	ret.y += __CameraY;
 	return (ret);
 }
 

@@ -5,5 +5,7 @@
 void SetDeltaTime(float time);
 float DeltaTime();
 void InitDeltaTime(unsigned int frameRate);
+float DeltaTimeReal();
+void SetDeltaMulti(float mult);
 
 #endif

@@ -8,10 +8,12 @@
 # include "player.h"
 # include "floorGrid.h"
 # include "bulletManager.h"
+# include "particles.h"
 
 class Pistol : public CustomComponent
 {
 	private:
+		std::vector<t_Box> colors;
 		uint64_t audioKey = 0;
 		uint32_t damage = 4;
 		float fireRate = 0.33f;
@@ -23,6 +25,7 @@ class Pistol : public CustomComponent
 		FloorGrid *grid = NULL;
 		BulletManager *bullets = NULL;
 		PlayerMovement *player = NULL;
+		Particles *parts = NULL;
 		void PositionPistol();
 		bool AnglePistol();
 		void PistolAnglePosition();

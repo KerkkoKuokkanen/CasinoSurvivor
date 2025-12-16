@@ -1,5 +1,6 @@
 
 float deltaTime = 0.0f;
+float deltaMulti = 1.0f;
 
 void SetDeltaTime(float time)
 {
@@ -9,9 +10,19 @@ void SetDeltaTime(float time)
 		deltaTime = time;
 }
 
-float DeltaTime()
+float DeltaTimeReal()
 {
 	return (deltaTime);
+}
+
+float DeltaTime()
+{
+	return (deltaTime * deltaMulti);
+}
+
+void SetDeltaMulti(float mult)
+{
+	deltaMulti = mult;
 }
 
 void InitDeltaTime(unsigned int frameRate)

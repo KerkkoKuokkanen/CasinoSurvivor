@@ -94,7 +94,7 @@ void FloorGrid::CalculateForces()
 		{
 			if (points[i][j].atHome)
 				continue ;
-			float delta = DeltaTime() * SPEED;
+			float delta = DeltaTimeReal() * SPEED;
 			points[i][j].current.x += points[i][j].force.x * delta;
 			points[i][j].current.y += points[i][j].force.y * delta;
 			float hx = points[i][j].home.x - points[i][j].current.x;
@@ -123,7 +123,6 @@ t_Point FloorGrid::TransformPoint(t_Point point)
 {
 	float x = point.x / 10.0f;
 	float y = point.y / 10.0f;
-	y *= (9.0f / 16.0f);
 	return ((t_Point){x, y});
 }
 

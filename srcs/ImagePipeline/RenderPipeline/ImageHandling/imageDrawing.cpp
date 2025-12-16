@@ -15,6 +15,10 @@ GLint tex0 = 0;
 GLint tex1 = 0;
 GLint tex2 = 0;
 GLint tex3 = 0;
+GLint tex4 = 0;
+GLint tex5 = 0;
+GLint tex6 = 0;
+GLint tex7 = 0;
 
 GLuint dummy = 0;
 GLuint vao, vbo, ebo;
@@ -165,7 +169,6 @@ void RenderSystem::TransformSprites(int i, std::vector<t_ImgDrawObj> &objs)
 			pos = TransformCoordinateToScreenSpaceCamera(pos.x, pos.y);
 		else
 			pos = TransformCoordinateToScreenSpace(pos.x, pos.y);
-		pos.y *= (9.0f / 16.0f);
 		t_BoundingB def = img->getBoundingBox();
 		def.leftTop = VectorRotate(def.leftTop, img->angle);
 		def.rightTop = VectorRotate(def.rightTop, img->angle);
@@ -195,7 +198,7 @@ void RenderSystem::TransformSprites(int i, std::vector<t_ImgDrawObj> &objs)
 
 static void BindTextures(std::vector<GLuint> &activeTextures)
 {
-	for (size_t ind = 0; ind < 4; ind++)
+	for (size_t ind = 0; ind < 8; ind++)
 	{
 		if (ind >= activeTextures.size())
 		{
@@ -217,7 +220,7 @@ static float CheckTextureBinding(std::vector<GLuint> &activeTextures, GLuint tex
 		if (activeTextures[i] == texture)
 			return (float)i;
 	}
-	if (activeTextures.size() < 3)
+	if (activeTextures.size() < 7)
 	{
 		activeTextures.push_back(texture);
 		return (float)(activeTextures.size() - 1);
@@ -300,9 +303,17 @@ void InitRenderSystem2()
 	tex1 = glGetUniformLocation(defaultImageShader->ID, "uTextures[1]");
 	tex2 = glGetUniformLocation(defaultImageShader->ID, "uTextures[2]");
 	tex3 = glGetUniformLocation(defaultImageShader->ID, "uTextures[3]");
+	tex4 = glGetUniformLocation(defaultImageShader->ID, "uTextures[4]");
+	tex5 = glGetUniformLocation(defaultImageShader->ID, "uTextures[5]");
+	tex6 = glGetUniformLocation(defaultImageShader->ID, "uTextures[6]");
+	tex7 = glGetUniformLocation(defaultImageShader->ID, "uTextures[7]");
 	glUniform1i(tex0, 0);
 	glUniform1i(tex1, 1);
 	glUniform1i(tex2, 2);
 	glUniform1i(tex3, 3); 
+	glUniform1i(tex4, 4); 
+	glUniform1i(tex5, 5); 
+	glUniform1i(tex6, 6); 
+	glUniform1i(tex7, 7); 
 	dummy = GetTextureGLSign("everyColor");
 }

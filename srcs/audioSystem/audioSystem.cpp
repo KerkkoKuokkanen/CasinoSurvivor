@@ -145,6 +145,7 @@ uint64_t RePlaySound(uint64_t sound, float volume, uint32_t loops, uint64_t key)
 	return (PlaySoundOwn(it->second, volume, true, key, loops));
 }
 
+// volume between 0.0f and 100.0f
 uint64_t RePlaySound(std::string sound, float volume, uint32_t loops, uint64_t key)
 {
 	auto it = audioWithNames.find(sound);

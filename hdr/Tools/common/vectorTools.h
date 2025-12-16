@@ -15,4 +15,9 @@ t_Point VectorPerp(t_Point v);
 float VectorCross(t_Point a, t_Point b);
 float VectorAngle(t_Point vec1, t_Point vec2);
 
+float RandCos();
+float RandSin();
+t_Point RandSinAndCos();
+void InitRandSinCos();
+
 #endif

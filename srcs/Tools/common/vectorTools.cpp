@@ -69,3 +69,37 @@ float VectorAngle(t_Point vec1, t_Point vec2)
 	float mag2 = VectorMagnitude(vec2);
 	return (acos(dot / (mag1 * mag2)));
 }
+
+#include <vector>
+
+static std::vector<float> sinRand;
+static std::vector<float> cosRand;
+
+float RandCos()
+{
+	int r = rand() % 360;
+	return (cosRand[r]);
+}
+
+float RandSin()
+{
+	int r = rand() % 360;
+	return (sinRand[r]);
+}
+
+t_Point RandSinAndCos()
+{
+	int r = rand() % 360;
+	t_Point ret = {sinRand[r], cosRand[r]};
+	return (ret);
+}
+
+void InitRandSinCos()
+{
+	for (int i = 0; i < 360; ++i)
+	{
+		float angle = 2.0 * PI * i / 360;
+		cosRand.push_back(std::cos(angle));
+		sinRand.push_back(std::sin(angle));
+	}
+}
