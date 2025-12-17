@@ -13,7 +13,7 @@ CrossHair::~CrossHair()
 void CrossHair::Start()
 {
 	SDL_ShowCursor(SDL_DISABLE);
-	img = new Image("crossHair1", {0.0f, 0.0f, 0.33f, 0.33f}, 0.0f, 15);
+	img = new Image("crossHair1", {0.0f, 0.0f, 0.33f, 0.33f}, 0.0f, 16);
 	img->SetColor(1.0f, 1.0f, 1.0f, 0.95f);
 }
 

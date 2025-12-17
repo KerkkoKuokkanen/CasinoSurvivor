@@ -5,6 +5,8 @@
 #include "envHandler.h"
 #include "vectorTools.h"
 #include "audio.h"
+#include "health.h"
+#include "gameStats.h"
 #include <cmath>
 
 #define MAX_SPEED 6.5f
@@ -21,9 +23,6 @@ PlayerMovement::PlayerMovement()
 	torso = new Image("torso", {START_X, START_Y, 3.6f, 3.6f}, 0.0f, 5);
 	leftS = new Image("shoeLeft", {START_X, START_Y, 3.6f, 3.6f}, 0.0f, 5);
 	rightS = new Image("shoeRight", {START_X, START_Y, 3.6f, 3.6f}, 0.0f, 5);
-	pill = new Image("pill2", {9.32f, -5.0f, 1.1f, 1.1f}, 0.0f, 13);
-	pill->SetTransformType(n_TransformTypes::TRANSFORM_STATIC);
-	pill->drawDepth = 9999.0f;
 	face->drawDepth = 1.0f;
 	glasses->drawDepth = 2.0f;
 	hair->drawDepth = 1.5f;
@@ -31,7 +30,7 @@ PlayerMovement::PlayerMovement()
 	leftS->drawDepth = 1.0f;
 	rightS->drawDepth = 0.0f;
 	position = {START_X, START_Y};
-	num = new Number({8.28f, -5.0f}, std::to_string(health), 0.7f, {0.8f, 0.8f, 0.8f, 1.0f}, 9000.0f);
+	health = GetHealth();
 }
 
 void PlayerMovement::GetInputs()
@@ -133,7 +132,6 @@ void PlayerMovement::Update()
 	MovePlayer();
 	ShoesAnimation();
 	HeadAnimation();
-	NumAnim();
 	CameraMovement();
 	DamageAnimation();
 	hitBox = {position.x - 0.3f, position.y - 0.8f, 0.8f, 1.6f};
@@ -181,12 +179,14 @@ void PlayerMovement::DamageAnimation()
 
 void PlayerMovement::Damage(int damage, float strength, t_Point pos)
 {
-	soundKey[0] = RePlaySound("hit1", 25.0f, 0, soundKey[0]);
-	soundKey[1] = RePlaySound("hit2", 5.0f, 0, soundKey[1]);
-	soundKey[2] = RePlaySound("hit3", 30.0f, 0, soundKey[2]);
-	soundKey[3] = RePlaySound("death2", 30.0f, 0, soundKey[3]);
-	numAddTime = 0.6f / ((float)damage);
 	health += damage;
+	SetHealth(health);
+	Health *h = (Health*)self->GetComponent("Health");
+	h->Damage(damage);
+	soundKey[0] = RePlaySound("hit1", 20.0f, 0, soundKey[0]);
+	soundKey[1] = RePlaySound("hit2", 4.0f, 0, soundKey[1]);
+	soundKey[2] = RePlaySound("hit3", 24.0f, 0, soundKey[2]);
+	soundKey[3] = RePlaySound("death2", 24.0f, 0, soundKey[3]);
 	float mult = fmax((float)health / 10.0f, 1.0f);
 	ApplyXForce(-strength * mult);
 	if (pos.y < position.y)
@@ -207,25 +207,6 @@ void PlayerMovement::Damage(int damage, float strength, t_Point pos)
 	rightS->SetColor(1.0f, 0.0f, 0.0f, 1.0f);
 	cycle = true;
 	damageTime = 0.1f;
-}
-
-void PlayerMovement::NumAnim()
-{
-	if (num->num == health)
-		return ;
-	if (numberAddTime >= numAddTime)
-	{
-		int amount = rounding(numberAddTime / numAddTime);
-		int n = num->num + amount;
-		if (n > health)
-			n = health;
-		delete num;
-		std::string nn = std::to_string(n);
-		float posX = 8.28f - (nn.length() - 1) * 0.7f;
-		num = new Number({posX, -5.0f}, nn, 0.7f, {0.8f, 0.8f, 0.8f, 1.0f}, 9000.0f);
-		numberAddTime = 0.0f;
-	}
-	numberAddTime += DeltaTimeReal();
 }
 
 void PlayerMovement::Start()
@@ -258,8 +239,4 @@ PlayerMovement::~PlayerMovement()
 		delete leftS;
 	if (rightS)
 		delete rightS;
-	if (pill)
-		delete pill;
-	if (num)
-		delete num;
 }

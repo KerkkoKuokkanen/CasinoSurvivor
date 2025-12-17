@@ -142,6 +142,21 @@ void SystemObj::GiveComponentId(void *component, uint32_t classType, uint32_t id
 
 void SystemObj::DeleteComponentOwn(void *component, uint32_t classType)
 {
+	if (component == NULL)
+	{
+		for (int i = 0; i < components.size(); i++)
+		{
+			if (components[i].uniqueKey == classType)
+			{
+				classType = components[i].classType;
+				component = components[i].obj;
+				components.erase(components.begin() + i);
+				break ;
+			}
+		}
+		if (component == NULL)
+			return ;
+	}
 	switch (classType)
 	{
 		case n_ComponentTypes::IMAGE_CLASS:

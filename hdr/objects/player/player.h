@@ -7,12 +7,12 @@
 # include "image.h"
 # include "floorGrid.h"
 # include "camera.h"
-# include "number.h"
 
 class PlayerMovement : public CustomComponent
 {
 	private:
 		uint64_t soundKey[4] = {0, 0, 0, 0};
+		uint64_t jKey = 0;
 		FloorGrid *grid = NULL;
 		Camera *cam = NULL;
 		Image *face = NULL;
@@ -21,8 +21,6 @@ class PlayerMovement : public CustomComponent
 		Image *torso = NULL;
 		Image *leftS = NULL;
 		Image *rightS = NULL;
-		Image *pill = NULL;
-		Number *num = NULL;
 		t_Box hitBox = {0.0f, 0.0f, 0.0f, 0.0f};
 		t_Point position = {0.0f, 0.0f};
 		t_Point direction = {0.0f, 0.0f};
@@ -40,8 +38,6 @@ class PlayerMovement : public CustomComponent
 		float invisTime = 0.0f;
 		float damageTime = 0.2f;
 		bool cycle = false;
-		float numberAddTime = 0.0f;
-		float numAddTime = 0.3f;
 		bool PositionShoes();
 		void ShoesWhilePressedF(float x);
 		void ShoesWhilePressedB(float x);
@@ -52,7 +48,6 @@ class PlayerMovement : public CustomComponent
 		void ShoesAnimation();
 		void CameraMovement();
 		void DamageAnimation();
-		void NumAnim();
 		void Jump();
 	public:
 		bool inAir = false;

@@ -7,7 +7,6 @@
 #include "envHandler.h"
 #include "objBar.h"
 #include "deltaTime.h"
-#include "image.h"
 
 SDL_Window *window = NULL;
 

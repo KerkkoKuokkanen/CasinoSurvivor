@@ -16,7 +16,7 @@ class Pistol : public CustomComponent
 		std::vector<t_Box> colors;
 		uint64_t audioKey = 0;
 		uint32_t damage = 4;
-		float fireRate = 0.33f;
+		float fireRate = 0.36f;
 		float recharge = 0.0f;
 		float recoil = 0.0f;
 		Image *pistol = NULL;

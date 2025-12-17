@@ -2,6 +2,7 @@
 #include "player.h"
 #include "keyboard.h"
 #include "deltaTime.h"
+#include "audio.h"
 
 #define TOP_PLAT 3.22f
 #define MID_PLAT -0.25f
@@ -62,6 +63,7 @@ void PlayerMovement::Jump()
 {
 	if (inAir && jumped == 1 && KeyPressed(SDL_SCANCODE_W))
 	{
+		jKey = RePlaySound("jump", 10.0f, 0, jKey);
 		inAir = true;
 		jumped = 2;
 		direction.y = 10.6f + jumpBoost;
@@ -69,12 +71,14 @@ void PlayerMovement::Jump()
 	}
 	if (KeyPressed(SDL_SCANCODE_W) && fabs(direction.y) < 0.0001f)
 	{
+		jKey = RePlaySound("jump", 10.0f, 0, jKey);
 		jumped = 1;
 		inAir = true;
 		direction.y = 12.2f;
 	}
 	if (cyoteTime < 0.18f && KeyPressed(SDL_SCANCODE_W) && jumped == 0)
 	{
+		jKey = RePlaySound("jump", 10.0f, 0, jKey);
 		jumped = 1;
 		inAir = true;
 		direction.y = 10.6f;
@@ -84,6 +88,7 @@ void PlayerMovement::Jump()
 		jumped = 1;
 		if (KeyPressed(SDL_SCANCODE_W))
 		{
+			jKey = RePlaySound("jump", 10.0f, 0, jKey);
 			inAir = true;
 			jumped = 2;
 			direction.y = 12.2f + jumpBoost;

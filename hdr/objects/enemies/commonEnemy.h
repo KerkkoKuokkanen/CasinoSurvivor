@@ -13,6 +13,7 @@ class CommonEnemy
 		int health = 0;
 		int type;
 		float speed = 1.0f;
+		float size = 0.0f;
 		t_Box hitbox = {0.0f, 0.0f, 0.0f, 0.0f};
 		t_Point position = {0.0f, 0.0f};
 		std::vector<unsigned int> knownBullets = {};

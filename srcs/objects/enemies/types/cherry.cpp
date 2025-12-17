@@ -20,7 +20,7 @@ Cherry::Cherry(t_Point pos, float size, EnemyData data)
 {
 	type = 1;
 	health = data.health;
-	Cherry::size = size;
+	CommonEnemy::size = size;
 	hbSize = size * 0.33f;
 	hbSize2 = hbSize * 2.0f;
 	img = new Image("EnemySheet", {0.0f, 0.0f, 1.0f, 1.0f}, 0.0f, 7);

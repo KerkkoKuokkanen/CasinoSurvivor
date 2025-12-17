@@ -1,8 +1,23 @@
 
 #include "number.h"
 
+void Number::SetColor(float r, float g, float b, float a)
+{
+	for (Image *i : images)
+		i->SetColor(r, g, b, a);
+}
+
+void Number::SetPosition(t_Point pos)
+{
+	position = pos;
+	for (int i = 0; i < images.size(); i++)
+		images[i]->position = {pos.x + (size * (float)i), pos.y};
+}
+
 Number::Number(t_Point position, std::string number, float size, t_Box color, float depth)
 {
+	Number::size = size;
+	Number::position = position;
 	float add = 0.1f;
 	num = std::stoi(number);
 	for (int i = 0; i < number.length(); i++)

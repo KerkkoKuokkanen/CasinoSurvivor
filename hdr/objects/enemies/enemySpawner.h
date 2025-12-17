@@ -11,7 +11,7 @@
 # include "player.h"
 # include <queue>
 
-# define MAX_ENEMIES 2500
+# define MAX_ENEMIES 3000
 
 class EnemySpawner : public CustomComponent
 {

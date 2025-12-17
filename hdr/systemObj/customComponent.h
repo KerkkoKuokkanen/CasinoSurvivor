@@ -46,6 +46,7 @@ class CustomComponent
 		void ClearSaveTracking();				//Clears tracked variables
 		void CreateInputField(std::string name, int varType, void *dest);		//Creates an inputfield in the engine
 		void AddToSaveTracking(void *addition, size_t size);					//Adds variable to be tracked and saved
+		void RemoveSelf() {self->RemoveComponent(ownId);};						//Removes itself
 	public:
 		bool active = true;						//active: true -> run update, false -> no update
 		float componentWeight = 0.0f;			//component with lower weight is run first inside the system object

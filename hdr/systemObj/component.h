@@ -5,5 +5,6 @@
 # include "envHandler.h"
 # include "componentRegistry.h"
 # include "image.h"
+# include "vectorTools.h"
 
 #endif

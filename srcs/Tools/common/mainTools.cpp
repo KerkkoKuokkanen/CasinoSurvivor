@@ -24,7 +24,6 @@ Uint32 figure_the_delay(Uint64 start, Uint64 freq)
 	if (remainingTimeSeconds > 0.0)
 	{
 		Uint32 delayMs = (Uint32)(remainingTimeSeconds * 1000.0);
-		//printf("%d\n", delayMs);
 		if (delayMs > 1)
 			return (delayMs - 1);
 		return (delayMs);

@@ -15,10 +15,12 @@ static bool HitBoxCheck(t_Box one, t_Box two)
 	return (x && y);
 }
 
+#define HB_CHECK_SIZE 0.25f
+
 std::tuple<t_Point, float, bool> EnemySpawner::FindPosAndSize(EnemyData &data)
 {
 	float size = (data.size + float_rand() * 0.5f) * 0.5f;
-	float hb = size * 0.33f;
+	float hb = size * HB_CHECK_SIZE;
 	float db = hb * 2.0f;
 	for (int i = 0; i < MAX_ITERATIONS; i++)
 	{
@@ -26,11 +28,13 @@ std::tuple<t_Point, float, bool> EnemySpawner::FindPosAndSize(EnemyData &data)
 		float y = float_rand() * SPAWN_AREA_Y_HEIGHT + SPAWN_AREA_Y;
 		t_Box area = {x - hb, y - hb, db, db};
 		bool hit = false;
-		CommonEnemy *p = NULL;
 		for (CommonEnemy *e : enemies)
 		{
-			p = e;
-			if (HitBoxCheck(e->hitbox, area))
+			float s = e->size * HB_CHECK_SIZE;
+			float w = s + s;
+			t_Point p = e->position;
+			t_Box h = {p.x - s, p.y - s, w, w};
+			if (HitBoxCheck(h, area))
 			{
 				hit = true;
 				break ;
