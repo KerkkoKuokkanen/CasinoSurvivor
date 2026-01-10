@@ -26,7 +26,7 @@ class EnemySpawner : public CustomComponent
 		void SetTime();
 		void SpawnEnemies();
 		void SetEnemyQueue(std::vector<EnemyData> &queue);
-		void EnemyCasting(EnemyData &data, t_Point pos, float size);
+		CommonEnemy *EnemyCasting(EnemyData &data, t_Point pos, float size);
 		void UpdateEnemies();
 		std::tuple<t_Point, float, bool> FindPosAndSize(EnemyData &data);
 	public:

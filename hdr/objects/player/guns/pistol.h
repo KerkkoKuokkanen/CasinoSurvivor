@@ -9,6 +9,7 @@
 # include "floorGrid.h"
 # include "bulletManager.h"
 # include "particles.h"
+# include "crossHair.h"
 
 class Pistol : public CustomComponent
 {
@@ -25,6 +26,7 @@ class Pistol : public CustomComponent
 		FloorGrid *grid = NULL;
 		BulletManager *bullets = NULL;
 		PlayerMovement *player = NULL;
+		CrossHair *crossHair = NULL;
 		Particles *parts = NULL;
 		void PositionPistol();
 		bool AnglePistol();

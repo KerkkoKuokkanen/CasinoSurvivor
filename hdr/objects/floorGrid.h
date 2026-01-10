@@ -39,6 +39,7 @@ class FloorGrid : public CustomComponent
 	public:
 		FloorGrid();
 		~FloorGrid();
+		t_Box GetColorMatchingPoint(float x);
 		void GiveFrequencies(std::vector<float> &freq);
 		void ApplyForce(t_Point position, float strength, float radius) {forces.push_back({TransformPoint(position), radius, strength});};
 		void Start() override;

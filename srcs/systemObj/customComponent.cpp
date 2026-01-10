@@ -26,6 +26,15 @@ void CustomComponent::ClearSaveTracking()
 	initDataSize -= size;
 }
 
+void CustomComponent::RemoveSelf()
+{
+	if (deleted)
+		return ;
+	deleted = true;
+	if (self != NULL)
+		self->RemoveComponent(ownId);
+}
+
 void CustomComponent::RemoveFromSave(void *removed, size_t size)
 {
 	uint64_t hash = HashData64(removed, size);
@@ -93,6 +102,26 @@ void *CustomComponent::CollectSaveData(size_t &size)
 	return (saveData);
 }
 
+void CustomComponent::UpdateInvokes()
+{
+	for (int i = 0; i < invokes.size(); i++)
+	{
+		while (invokes[i].counter >= invokes[i].repeatTime)
+		{
+			invokes[i].f();
+			invokes[i].loops -= 1;
+			invokes[i].counter -= invokes[i].repeatTime;
+			if (invokes[i].loops < 0)
+				break ;
+		}
+		invokes[i].counter += DeltaTimeReal();
+	}
+	auto it = std::remove_if(invokes.begin(), invokes.end(), [](const InvokeStruct& n) {
+		return n.loops < 0;
+	});
+	invokes.erase(it, invokes.end());
+}
+
 void CustomComponent::CreateInputField(std::string name, int varType, void *dest)
 {
 	std::tuple<std::string, int, void*> add = {name, varType, dest};
@@ -104,6 +133,14 @@ CustomComponent::~CustomComponent()
 	ClearSaveData();
 	saveTrack.clear();
 	initDataSize = 0;
+	deleted = true;
 	if (self != NULL)
-		self->RemoveComponent(ownId);
+		self->RemoveComponent(ownId, true);
+}
+
+void CustomComponent::Destroy()
+{
+	OnDestroy();
+	if (self != NULL)
+		RemoveSelf();
 }

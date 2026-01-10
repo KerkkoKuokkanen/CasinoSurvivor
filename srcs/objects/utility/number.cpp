@@ -14,7 +14,7 @@ void Number::SetPosition(t_Point pos)
 		images[i]->position = {pos.x + (size * (float)i), pos.y};
 }
 
-Number::Number(t_Point position, std::string number, float size, t_Box color, float depth)
+Number::Number(t_Point position, std::string number, float size, t_Box color, float depth, bool staticImage)
 {
 	Number::size = size;
 	Number::position = position;
@@ -29,7 +29,8 @@ Number::Number(t_Point position, std::string number, float size, t_Box color, fl
 		img->drawDepth = depth;
 		img->SetColor(color.x, color.y, color.w, color.h);
 		img->SetTextureData(rect.x, rect.y, rect.w, rect.h, 0.0f);
-		img->SetTransformType(n_TransformTypes::TRANSFORM_STATIC);
+		if (staticImage)
+			img->SetTransformType(n_TransformTypes::TRANSFORM_STATIC);
 		images.push_back(img);
 	}
 }

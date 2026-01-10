@@ -86,6 +86,11 @@ void SystemObj::LastUpdateSystemObj()
 	}
 }
 
+void UpdateCustInvokes(CustomComponent *cust)
+{
+	cust->UpdateInvokes();
+}
+
 void SystemObj::UpdateSystemObj()
 {
 	if (EngineModeOn())
@@ -115,6 +120,7 @@ void SystemObj::UpdateSystemObj()
 		}
 		if (cust->active == false)
 			continue ;
+		UpdateCustInvokes(cust);
 		cust->Update();
 	}
 }
@@ -174,7 +180,6 @@ void SystemObj::DeleteComponentOwn(void *component, uint32_t classType)
 		default :
 		{
 			CustomComponent *cust = (CustomComponent*)component;
-			cust->Destroy();
 			delete cust;
 			break ;
 		}

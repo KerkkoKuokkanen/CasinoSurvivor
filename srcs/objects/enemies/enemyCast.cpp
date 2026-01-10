@@ -46,14 +46,20 @@ std::tuple<t_Point, float, bool> EnemySpawner::FindPosAndSize(EnemyData &data)
 	return {{0.0f, 0.0f}, 0.0f, false};
 }
 
-void EnemySpawner::EnemyCasting(EnemyData &data, t_Point pos, float size)
+CommonEnemy *EnemySpawner::EnemyCasting(EnemyData &data, t_Point pos, float size)
 {
 	switch (data.type)
 	{
 		case 1:
-			enemies.push_back(new Cherry(pos, size, data));
-			break ;
+		{
+			Cherry *cherry = new Cherry(pos, size, data);
+			enemies.push_back(cherry);
+			return (cherry);
+		}
 		default :
-			break ;
+		{
+			return (NULL);
+		}
 	}
+	return (NULL);
 }

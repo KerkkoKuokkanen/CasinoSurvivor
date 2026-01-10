@@ -14,6 +14,8 @@ class CommonEnemy
 		int type;
 		float speed = 1.0f;
 		float size = 0.0f;
+		int damage = 0;
+		int currency = 0;
 		t_Box hitbox = {0.0f, 0.0f, 0.0f, 0.0f};
 		t_Point position = {0.0f, 0.0f};
 		std::vector<unsigned int> knownBullets = {};

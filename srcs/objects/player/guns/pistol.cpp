@@ -45,7 +45,10 @@ void Pistol::Start()
 {
 	SystemObj *obj = FindSystemObject(17206662188527305259LU);
 	if (obj)
+	{
 		grid = (FloorGrid*)obj->GetComponent("FloorGrid");
+		crossHair = (CrossHair*)obj->GetComponent("CrossHair");
+	}
 	player = (PlayerMovement*)self->GetComponent("PlayerMovement");
 	obj = FindSystemObject(6302736476082374709LU);
 	if (obj)
@@ -178,13 +181,14 @@ void Pistol::CreateBullet()
 	if (bullets)
 	{
 		parts->AddParticles({bulletPos.x - 0.25f, bulletPos.y}, 0.1f, dir, 0.3f, colors, 3.0f, 6.0f, 20, "everyColor", 0.025f, 0.05f, 0.12f, 0.18f, 0.0f);
-		bullets->CreateBullet(bulletPos, dir, 10.0f, {0.76f, 0.53f, 0.25f, 1.0f});
+		bullets->CreateBullet(bulletPos, dir, 10.0f, {1.0f, 0.53f, 0.25f, 1.0f});
 	}
 	recoil = recoil + 0.4f;
 }
 
 void Pistol::Shooting()
 {
+	shooting = false;
 	if (recoil > 0.0f)
 		recoil -= DeltaTime();
 	if (recharge > 0.0f)
@@ -193,7 +197,6 @@ void Pistol::Shooting()
 		shooting = true;
 	if (!shooting)
 		return ;
-	shooting = false;
 	if (MouseKeyHeld(n_MouseKeys::MOUSE_LEFT) && recharge <= 0.0f)
 	{
 		player->ApplyXForce(-4.2f);
@@ -217,4 +220,7 @@ void Pistol::Update()
 		FullPosition();
 	Shooting();
 	GunBopping();
+	player->shooting = shooting;
+	if (crossHair)
+		crossHair->SetRecoil(recoil);
 }

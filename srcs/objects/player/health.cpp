@@ -1,14 +1,15 @@
 
 #include "health.h"
 #include "gameStats.h"
+#include "audio.h"
 
 Health::Health()
 {
 	ResetStats();	//Temporarily here
 	pill = new Image("pill2", {9.32f, 5.0f, 1.1f, 1.1f}, 0.0f, 13);
 	pill->SetTransformType(n_TransformTypes::TRANSFORM_STATIC);
-	pill->drawDepth = 9999.0f;
-	num = new Number({8.28f, 5.0f}, std::to_string(health), 0.7f, {0.8f, 0.8f, 0.8f, 1.0f}, 9000.0f);
+	pill->drawDepth = 200.0f;
+	num = new Number({8.28f, 5.0f}, std::to_string(health), 0.7f, {0.8f, 0.8f, 0.8f, 1.0f}, 200000.0f);
 	numPos = {8.28, 5.0f};
 	health = GetHealth();
 }
@@ -28,9 +29,9 @@ void Health::Damage(int damage)
 		dmg = 4;
 	else if (dmg > 30)
 		dmg = 30;
-	float r = (189.0f - ((8.0f / 26.0f) * ((float)dmg - 4.0f))) / 255.0f;
-	float g = (153.0f - ((149.0f / 26.0f)  * ((float)dmg - 4.0f))) / 255.0f;
-	float b = (11.0f - ((6.0f / 26.0f) * ((float)dmg - 4.0f))) / 255.0f;
+	float r = 0.8f;
+	float g = 0.0f;
+	float b = 0.0f;
 	float sm = (0.1f / 26.0f) * ((float)dmg - 4.0f);
 	numberShakeMag = sm + 0.1f;
 	numShakeColor = {r, g, b, 1.0f};
@@ -40,6 +41,13 @@ void Health::Damage(int damage)
 	numShakeMini = 0.07f;
 	health = GetHealth();
 	cycle2 = true;
+
+	float souncScale = 0.6f / 26.0f;
+	float soundMulti = 1.0f + (souncScale * (float)(dmg - 4));
+	soundKey[0] = RePlaySound("hit1", 20.0f * soundMulti, 0, soundKey[0]);
+	soundKey[1] = RePlaySound("hit2", 4.0f * soundMulti, 0, soundKey[1]);
+	soundKey[2] = RePlaySound("hit3", 24.0f * soundMulti, 0, soundKey[2]);
+	soundKey[3] = RePlaySound("death2", 24.0f * soundMulti, 0, soundKey[3]);
 }
 
 void Health::Hfunc1()
@@ -84,7 +92,7 @@ void Health::Hfunc2()
 		delete num;
 		std::string nn = std::to_string(n);
 		float posX = 8.28f - (nn.length() - 1) * 0.7f;
-		num = new Number({posX, 5.0f}, nn, 0.7f, {0.8f, 0.8f, 0.8f, 1.0f}, 9000.0f);
+		num = new Number({posX, 5.0f}, nn, 0.7f, {0.8f, 0.8f, 0.8f, 1.0f}, 220.0f);
 		numPos = {posX, 5.0f};
 		numberAddTime = 0.0f;
 	}

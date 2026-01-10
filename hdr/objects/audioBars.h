@@ -17,6 +17,7 @@ class AudioBars : public CustomComponent
 	public:
 		AudioBars();
 		~AudioBars();
+		void StopMusic();
 		void Start() override;
 		void Update() override;
 };

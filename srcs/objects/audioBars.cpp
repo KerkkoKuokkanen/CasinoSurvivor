@@ -106,6 +106,11 @@ void AudioBars::Start()
 	PlayMusic("testmus2");
 }
 
+void AudioBars::StopMusic()
+{
+	Mix_HaltChannel(RESERVED_CHANNEL);
+}
+
 AudioBars::AudioBars()
 {
 	g_fftConfig = kiss_fftr_alloc(FFT_SIZE, 0, NULL, NULL);

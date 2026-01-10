@@ -234,11 +234,11 @@ void ObjectEditor::UpdateImageClass(SystemObj *obj)
 
 	ImGui::NewLine();
 	ImGui::Text("Texture Data:");
-	ImGui::InputFloat("Pos X", &tData.x, 0.01f, 1.0f, "%.2f");
-	ImGui::InputFloat("Pos Y", &tData.y, 0.01f, 1.0f, "%.2f");
-	ImGui::InputFloat("t Width", &tData.w, 0.01f, 1.0f, "%.2f");
-	ImGui::InputFloat("t Height", &tData.h, 0.01f, 1.0f, "%.2f");
-	ImGui::InputFloat("t Angle", &tData.a, 0.01f, 1.0f, "%.2f");
+	ImGui::InputFloat("Pos X", &tData.x, 0.001f, 1.0f, "%.3f");
+	ImGui::InputFloat("Pos Y", &tData.y, 0.001f, 1.0f, "%.3f");
+	ImGui::InputFloat("t Width", &tData.w, 0.001f, 1.0f, "%.3f");
+	ImGui::InputFloat("t Height", &tData.h, 0.001f, 1.0f, "%.3f");
+	ImGui::InputFloat("t Angle", &tData.a, 0.001f, 1.0f, "%.3f");
 
 	ImGui::NewLine();
 	TransformDropDown(obj);

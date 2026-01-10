@@ -11,7 +11,6 @@ class Cherry : public CommonEnemy
 		bool dead = false;
 		Image *img = NULL;
 		Image *death = NULL;
-		float size = 0.0f;
 		float hbSize = 0.0f;
 		float hbSize2 = 0.0f;
 		float cycle = 0.0f;

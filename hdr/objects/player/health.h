@@ -8,6 +8,7 @@
 class Health : public CustomComponent
 {
 	private:
+		uint64_t soundKey[4] = {0, 0, 0, 0};
 		Image *pill = NULL;
 		Number *num = NULL;
 		int health = 0;

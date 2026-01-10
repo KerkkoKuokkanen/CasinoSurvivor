@@ -71,14 +71,23 @@ class SystemObj
 		bool GetDeleting() {return (deleting);};		//Helper function for internal stuff
 		bool GetSaveable();								//Helper function for internal stuff, Tells if the object is added to save file
 		uint16_t GetSaveableRoom();						//Gets info for what room the object is saved to
+
 		//Sets the save room manually for the object
 		//room 0 is default for the current room
 		//0 is by deafault the engine room and bypass == true lets you use the 0 value for engine room
 		void SetSaveable(uint8_t save, uint16_t room = 0, bool bypass = false);
 		void ClearSaveable() {saveable = 0;};	//Makes object not saveable anymore
 		uint64_t GetSystemObjectKey() {return (uniqueSystemObjKey);};	//Get the key for the object
-		uint64_t SystemObjectKey() {return (uniqueSystemObjKey);};		//Same function?
-		void RemoveComponent(uint32_t id);					//Remove the component of the given id
+		uint64_t SystemObjectKey() {return (uniqueSystemObjKey);};		//Get the key for the object
+
+		//Removes the component from SystemObject without deleting it
+		void PopComponent(uint32_t id);
+
+		//Remove the component of the given id
+		//If you want to remove a component use the RemoveSelf method of the CustomComponent
+		//This method also works but should not be called multiple times in the same frame for the same component
+		//Custom component uses this for the removal but also keeps track that it is only called once for itself
+		void RemoveComponent(uint32_t id, bool destructed = false);
 		void *GetComponent(const std::string &component);	//Get the first component matching the name or NULL
 		std::vector<void*> GetComponents(const std::string &components);	//Get all the components matching the name
 		void *AddComponent(const std::string component);				//Add a new component with the component name

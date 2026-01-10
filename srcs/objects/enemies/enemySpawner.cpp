@@ -40,7 +40,15 @@ void EnemySpawner::SpawnEnemies()
 		std::tuple<t_Point, float, bool> enem = FindPosAndSize(data);
 		if (!std::get<2>(enem))
 			break ;
-		EnemyCasting(data, std::get<0>(enem), std::get<1>(enem));
+		CommonEnemy *e = EnemyCasting(data, std::get<0>(enem), std::get<1>(enem));
+		if (e != NULL && data.independent == false)
+		{
+			e->currency = data.currency;
+			e->damage = data.damage;
+			e->health = data.health;
+			e->speed = data.speed;
+			e->type = data.type;
+		}
 		enemyQueue.pop();
 	}
 }
@@ -64,6 +72,8 @@ void EnemySpawner::Start()
 	{
 		EnemyData add;
 		add.health = 12;
+		add.damage = 4;
+		add.currency = 3;
 		add.independent = false;
 		add.speed = 1.0f;
 		add.time = float_rand() * 25.0f;
@@ -85,13 +95,15 @@ void EnemySpawner::UpdateEnemies()
 		float x = enemies[i]->position.x;
 		if (playerNotHit && HitBoxCheck(hb, enemies[i]->hitbox))
 		{
+			int dmg = 4;
 			playerNotHit = false;
-			SetDeltaMulti(0.1f);
-			deltaTimer = 0.15f;
+			SetDeltaMulti(0.02f);
+			deltaTimer = 0.15f * (1.0f + (1.4f / 26.0f) * fmin(26.0f, (float)(dmg - 4)));
 			grid->ApplyForce(enemies[i]->position, 0.2f, 0.5f);
-			shake->CreateCameraShake();
+			shake->CreateCameraShake(0.05f);
+			Invoke([=]() { shake->CreateCameraShakeDefault(); }, 4, 0.05f);
 			enemies[i]->Attack();
-			player->Damage(4, 25.0f, enemies[i]->position);
+			player->Damage(dmg, 25.0f, enemies[i]->position);
 		}
 		if (enemies[i]->health > 0)
 			enemies[i]->Position(x - enemies[i]->speed * DeltaTime(), enemies[i]->position.y);

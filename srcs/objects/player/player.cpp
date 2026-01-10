@@ -4,7 +4,6 @@
 #include "deltaTime.h"
 #include "envHandler.h"
 #include "vectorTools.h"
-#include "audio.h"
 #include "health.h"
 #include "gameStats.h"
 #include <cmath>
@@ -30,7 +29,6 @@ PlayerMovement::PlayerMovement()
 	leftS->drawDepth = 1.0f;
 	rightS->drawDepth = 0.0f;
 	position = {START_X, START_Y};
-	health = GetHealth();
 }
 
 void PlayerMovement::GetInputs()
@@ -123,6 +121,8 @@ void PlayerMovement::CameraMovement()
 	cam->SetCameraPosition(curPos.x, curPos.y);
 }
 
+#include "mouse.h"
+
 void PlayerMovement::Update()
 {
 	leftRight = 0;
@@ -183,10 +183,6 @@ void PlayerMovement::Damage(int damage, float strength, t_Point pos)
 	SetHealth(health);
 	Health *h = (Health*)self->GetComponent("Health");
 	h->Damage(damage);
-	soundKey[0] = RePlaySound("hit1", 20.0f, 0, soundKey[0]);
-	soundKey[1] = RePlaySound("hit2", 4.0f, 0, soundKey[1]);
-	soundKey[2] = RePlaySound("hit3", 24.0f, 0, soundKey[2]);
-	soundKey[3] = RePlaySound("death2", 24.0f, 0, soundKey[3]);
 	float mult = fmax((float)health / 10.0f, 1.0f);
 	ApplyXForce(-strength * mult);
 	if (pos.y < position.y)
@@ -211,6 +207,7 @@ void PlayerMovement::Damage(int damage, float strength, t_Point pos)
 
 void PlayerMovement::Start()
 {
+	health = GetHealth();
 	componentWeight = -1.0f;
 	SystemObj *obj = FindSystemObject(17206662188527305259LU);
 	if (obj)

@@ -9,6 +9,17 @@ ScreenTransition::ScreenTransition()
 	cover->drawActive = false;
 }
 
+void ScreenTransition::Init(void *data, size_t size)
+{
+	AddToSaveTracking(&transitionType, sizeof(int));
+	CreateInputField("transition type", n_VarType::INTEGER, &transitionType);
+	if (size == 0)
+		return ;
+	transitionType = *(int*)data;
+	if (transitionType == 1)
+		cover->position.x = 26.0f;
+}
+
 ScreenTransition::~ScreenTransition()
 {
 	delete cover;
@@ -17,9 +28,17 @@ ScreenTransition::~ScreenTransition()
 void ScreenTransition::Update()
 {
 	cover->drawActive = true;
-	if (time <= 0.0f)
+	if (time <= 0.0f && removeSelf)
 		return (RemoveSelf());
-	cover->position = {cover->position.x - 38.0f * DeltaTimeReal(), cover->position.y};
+	if (transitionType <= 1)
+	{
+		if (transitionType == 1 && cover->position.x <= 0.05f)
+		{
+			time -= DeltaTimeReal();
+			return ;
+		}
+		cover->position = {cover->position.x - 44.0f * DeltaTimeReal(), cover->position.y};
+	}
 	time -= DeltaTimeReal();
 }
 

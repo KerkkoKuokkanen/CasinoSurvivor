@@ -9,9 +9,11 @@
 class CrossHair : public CustomComponent
 {
 	private:
-		Image *img = NULL;
+		Image *img[5] = {NULL, NULL, NULL, NULL, NULL};
+		float recoil = 0.0f;
 	public:
 		~CrossHair();
+		void SetRecoil(float gunRecoil) {recoil = gunRecoil;};
 		void Start() override;
 		void Update() override;
 };

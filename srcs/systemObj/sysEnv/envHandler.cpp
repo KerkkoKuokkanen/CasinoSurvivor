@@ -163,11 +163,11 @@ SysEnv *GetCurrentEnvironment()
 	return (currentEnvironment);
 }
 
-void ComponentRemover(uint64_t key, uint32_t id)
+void ComponentRemover(uint64_t key, uint32_t id, bool destructed)
 {
 	if (currentEnvironment == NULL)
 		return ;
-	currentEnvironment->ComponentRemove(key, id);
+	currentEnvironment->ComponentRemove(key, id, destructed);
 }
 
 void LoadObjectsToEnvironment(SnapShot snap, uint16_t room)

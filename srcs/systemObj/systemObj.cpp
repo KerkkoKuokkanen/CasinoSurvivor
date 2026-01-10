@@ -203,21 +203,33 @@ bool SystemObj::GetSaveable()
 	return (false);
 }
 
-void SystemObj::RemoveComponent(uint32_t id)
+void SystemObj::PopComponent(uint32_t id)
 {
-	if (deleting)
-		return ;
-	ComponentRemover(uniqueSystemObjKey, id);
-	/* for (int i = 0; i < components.size(); i++)
+	for (int i = 0; i < components.size(); i++)
 	{
 		if (components[i].uniqueKey == id)
 		{
-			printf("%s\n", components[i].type.c_str());
-			//DeleteComponentOwn(components[i].obj, id);
 			components.erase(components.begin() + i);
 			return ;
 		}
-	} */
+	}
+}
+
+void SystemObj::RemoveComponent(uint32_t id, bool destructed)
+{
+	if (deleting)
+		return ;
+	ComponentRemover(uniqueSystemObjKey, id, destructed);
+	if (!destructed)
+		return ;
+	for (int i = 0; i < components.size(); i++)
+	{
+		if (components[i].uniqueKey == id)
+		{
+			components.erase(components.begin() + i);
+			return ;
+		}
+	}
 }
 
 void SystemObj::Destroy()

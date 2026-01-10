@@ -24,7 +24,7 @@ static unsigned int BulletNamer()
 
 BulletManager::BulletManager()
 {
-
+	numbers.reserve(MAX_NUMBERS);
 }
 
 BulletManager::~BulletManager()
@@ -33,6 +33,10 @@ BulletManager::~BulletManager()
 	{
 		if (bullets[i].img != NULL)
 			delete bullets[i].img;
+	}
+	for (int i = 0; i < numbers.size(); i++)
+	{
+		delete numbers[i].num;
 	}
 }
 
@@ -43,6 +47,7 @@ void BulletManager::Start()
 	shaker = (CameraShake*)self->GetComponent("CameraShake");
 	obj = FindSystemObject(10158550851708924347LU);
 	part = (Particles*)obj->GetComponent("Particles");
+	chips = (ChipManager*)self->GetComponent("ChipManager");
 	std::vector<t_Box> col1;
 	col1.push_back({0.63f, 0.08f, 0.08f, 1.0f});
 	col1.push_back({0.53f, 0.09f, 0.045f, 1.0f});
@@ -100,6 +105,18 @@ bool BulletManager::bulletOutOfBound(t_Point pos)
 	return (false);
 }
 
+void BulletManager::CreateDamageNumber(t_Point pos, int damage)
+{
+	if (numbers.size() >= MAX_NUMBERS)
+		return ;
+	t_Box color = {1.0f, 0.82f, 0.31f, 1.0f};
+	Number *num = new Number({pos.x + 0.05f, pos.y + 0.15f}, std::to_string(damage), 0.33f, color, numDepth, false);
+	numDepth += 0.01f;
+	if (numDepth > 25000.0f)
+		numDepth = 0.0f;
+	numbers.push_back({num, color, 0.3f, false});
+}
+
 bool BulletManager::CheckEnemyHit(std::vector<CommonEnemy*> &enemies, int index)
 {
 	for (int i = 0; i < enemies.size(); i++)
@@ -111,14 +128,17 @@ bool BulletManager::CheckEnemyHit(std::vector<CommonEnemy*> &enemies, int index)
 		{
 			grid->ApplyForce(enemies[i]->position, 0.05f, 0.2f);
 			enemies[i]->EnemyHit(bullets[index].damage, bullets[index].pos, bullets[index].name);
+			CreateDamageNumber(enemies[i]->position, bullets[index].damage);
 		}
 		else if (ret == 2)
 		{
 			soundKey3 = RePlaySound("death1", 4.5f, 0, soundKey3);
 			grid->ApplyForce(enemies[i]->position, 0.1f, 0.4f);
-			shaker->CreateCameraShake();
+			shaker->CreateCameraShake(0.05f);
 			CreateDeathParticles(enemies[i]);
 			enemies[i]->KillEnemy();
+			CreateDamageNumber(enemies[i]->position, bullets[index].damage);
+			chips->CreateChips(enemies[i]->position, enemies[i]->currency);
 		}
 		bullets[index].active = false;
 		bullets[index].img->drawActive = false;
@@ -129,8 +149,34 @@ bool BulletManager::CheckEnemyHit(std::vector<CommonEnemy*> &enemies, int index)
 	return (false);
 }
 
+static bool CheckNumTime(DamageNumber num)
+{
+	return num.done;
+}
+
+void BulletManager::UpdateDamageNumbers()
+{
+	float scale = 1.0f / 0.15f;
+	for (int i = 0; i < numbers.size(); i++)
+	{
+		t_Point pos = numbers[i].num->GetPosition();
+		numbers[i].num->SetPosition({pos.x, pos.y + numbers[i].time * DeltaTime() * 6.0f});
+		float alpha = scale * fmax(numbers[i].time, 0.0f);
+		t_Box col = numbers[i].color;
+		numbers[i].num->SetColor(col.x, col.y, col.w, fmin(1.0f, alpha));
+		numbers[i].time -= DeltaTime();
+		if (numbers[i].time <= 0.0f)
+		{
+			numbers[i].done = true;
+			delete numbers[i].num;
+		}
+	}
+	numbers.erase(std::remove_if(numbers.begin(), numbers.end(), CheckNumTime), numbers.end());
+}
+
 void BulletManager::Update()
 {
+	UpdateDamageNumbers();
 	EnemySpawner *spwn = (EnemySpawner*)self->GetComponent("EnemySpawner");
 	if (spwn == NULL)
 		return ;

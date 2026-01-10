@@ -4,7 +4,7 @@
 
 # include "component.h"
 
-# define MAX_PARTICLES 10000
+# define MAX_PARTICLES 50000
 
 struct Particle {
 	Image *image;

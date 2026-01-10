@@ -18,7 +18,7 @@ class SysEnv
 	private:
 		SystemSaver *envState;
 		std::vector<SystemObj*> deleting = {};
-		std::vector<std::tuple<uint64_t, uint32_t>> compDeleting = {};
+		std::vector<std::tuple<uint64_t, uint32_t, bool>> compDeleting = {};
 		std::unordered_map<uint64_t, SystemObj*> envSysObjs;
 		std::vector<uint16_t> deLoadedRooms = {};
 		void SnapLoading(sysKeyObj keyObj);
@@ -39,7 +39,7 @@ class SysEnv
 		void AddToDeleting(SystemObj *deleted) {deleting.push_back(deleted);};
 		void UpdateSysObjects();
 		void LastUpdateSysObjects();
-		void ComponentRemove(uint64_t key, uint32_t id) {compDeleting.push_back({key, id});};
+		void ComponentRemove(uint64_t key, uint32_t id, bool destructed = false) {compDeleting.push_back({key, id, destructed});};
 		void *FindAny(std::string component);
 };
 

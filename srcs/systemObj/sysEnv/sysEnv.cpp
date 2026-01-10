@@ -82,8 +82,8 @@ void SysEnv::LastUpdateSysObjects()
 	{
 		envState->changeSpotted = true;
 		envState->RemoveComponentFromSaver(std::get<0>(compDeleting[i]), std::get<1>(compDeleting[i]));
-		envSysObjs[std::get<0>(compDeleting[i])]->DeleteComponentOwn(NULL, std::get<1>(compDeleting[i]));
-		//DeleteComponentOwn(components[i].obj, components[i].classType);
+		if (std::get<2>(compDeleting[i]) == false)
+			envSysObjs[std::get<0>(compDeleting[i])]->DeleteComponentOwn(NULL, std::get<1>(compDeleting[i]));
 	}
 	for (int i = 0; i < deleting.size(); i++)
 	{

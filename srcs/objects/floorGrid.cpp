@@ -133,6 +133,22 @@ void FloorGrid::Update()
 	AssignBoundingBox();
 }
 
+t_Box FloorGrid::GetColorMatchingPoint(float x)
+{
+	float ux = TransformPoint({x, 0.0f}).x;
+	float close = 999.9f;
+	int closest = 0;
+	for (int i = 0; i < GRID_WIDTH; i++)
+	{
+		if (fabs(points[0][i].home.x - ux) < close)
+		{
+			closest = i;
+			close = fabs(points[0][i].home.x - ux);
+		}
+	}
+	return (grid[3][closest]->GetColor());
+}
+
 void FloorGrid::SetColorForGrid(int i, int j, int bar)
 {
 	int i2 = i * 2;

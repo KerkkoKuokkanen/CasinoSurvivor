@@ -87,6 +87,20 @@ float RandSin()
 	return (sinRand[r]);
 }
 
+float GetSinAngle(unsigned int angle)
+{
+	if (angle >= 360)
+		angle = angle % 360;
+	return (sinRand[angle]);
+}
+
+float GetCosAngle(unsigned int angle)
+{
+	if (angle >= 360)
+		angle = angle % 360;
+	return (cosRand[angle]);
+}
+
 t_Point RandSinAndCos()
 {
 	int r = rand() % 360;

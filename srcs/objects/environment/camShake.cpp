@@ -8,10 +8,20 @@ void CameraShake::Start()
 	cam = (Camera*)obj->GetComponent("Camera");
 }
 
-void CameraShake::CreateCameraShake()
+void CameraShake::CreateCameraShake(float shakeTime)
 {
-	time = 0.04f;
+	time = shakeTime;
+	if (time < 0.04f)
+		time = 0.04f;
 	cam->SetCameraZoom(10.0f);
+	iter = 1.0f / time;
+}
+
+void CameraShake::CreateCameraShakeDefault()
+{
+	time = 0.05f;
+	cam->SetCameraZoom(10.0f);
+	iter = 1.0f / time;
 }
 
 void CameraShake::Update()
@@ -21,7 +31,7 @@ void CameraShake::Update()
 		cam->SetCameraZoom(10.0f);
 		return ;
 	}
-	float y = 20.0f * time - 0.9f;
+	float y = iter * -time + 0.5f;
 	cam->SetCameraZoom(10.0f + y);
-	time -= DeltaTime();
+	time -= DeltaTimeReal();
 }

@@ -12,7 +12,7 @@ class Number
 		float size = 0.0f;
 	public:
 		int num = 0;
-		Number(t_Point position, std::string number, float size, t_Box color, float depth);
+		Number(t_Point position, std::string number, float size, t_Box color, float depth, bool staticImage = true);
 		~Number();
 		void SetColor(float r, float g, float b, float a);
 		void SetPosition(t_Point pos);

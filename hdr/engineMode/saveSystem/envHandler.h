@@ -30,7 +30,7 @@ std::unordered_map<uint64_t, SystemObj*> &GetSysEnvData();
 SystemObj *FindSystemObject(uint64_t objKey);
 void *FindAny(std::string component);
 
-void ComponentRemover(uint64_t key, uint32_t id);
+void ComponentRemover(uint64_t key, uint32_t id, bool destructed = false);
 void CreateNewRoom(std::string name);
 
 #endif

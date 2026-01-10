@@ -11,7 +11,6 @@
 class PlayerMovement : public CustomComponent
 {
 	private:
-		uint64_t soundKey[4] = {0, 0, 0, 0};
 		uint64_t jKey = 0;
 		FloorGrid *grid = NULL;
 		Camera *cam = NULL;
@@ -52,6 +51,7 @@ class PlayerMovement : public CustomComponent
 	public:
 		bool inAir = false;
 		bool canHit = true;
+		bool shooting = false;
 		t_Box GetHitBox() {return (hitBox);};
 		PlayerMovement();
 		~PlayerMovement();

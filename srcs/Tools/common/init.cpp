@@ -24,10 +24,11 @@
 #include <thread>
 #include "deltaTime.h"
 #include "vectorTools.h"
+#include "letterTable.h"
 
 //2560 × 1600
-#define WIDTH 2560
-#define HEIGHT 1600
+#define WIDTH 1920
+#define HEIGHT 1080
 #define FULL_SCREEN 1
 #define FRAME_RATE 60
 
@@ -109,8 +110,8 @@ SDL_Window *Init()
 
 	SetFrameRate(FRAME_RATE);
 	SetFrameTime(FRAME_RATE);
-	SDL_GetWindowSize(window, &__currentScreenWidth, &__currentScreenHeight);
 	SDL_SetWindowFullscreen(window, FULL_SCREEN);
+	SDL_GetWindowSize(window, &__currentScreenWidth, &__currentScreenHeight);
 	glViewport(0, 0, __currentScreenWidth, __currentScreenHeight);
 	glClearColor(0.0, 0.0, 0.0, 0.0f);
 
@@ -157,6 +158,7 @@ void InitSetup(Shader *shader)
 	InitAudio();
 	InitShapes(shader);
 	InitLines();
+	InitFontTable();
 	InitStructure(shader);
 	LoadTextures();
 	SetPillarBoxes();

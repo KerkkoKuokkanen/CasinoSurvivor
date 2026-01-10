@@ -19,5 +19,7 @@ float RandCos();
 float RandSin();
 t_Point RandSinAndCos();
 void InitRandSinCos();
+float GetSinAngle(unsigned int angle);
+float GetCosAngle(unsigned int angle);
 
 #endif
