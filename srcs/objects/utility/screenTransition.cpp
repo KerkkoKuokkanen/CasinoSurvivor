@@ -20,6 +20,13 @@ void ScreenTransition::Init(void *data, size_t size)
 		cover->position.x = 26.0f;
 }
 
+void ScreenTransition::SetTransitionType(int type)
+{
+	transitionType = type;
+	if (transitionType == 1)
+		cover->position.x = 26.0f;
+}
+
 ScreenTransition::~ScreenTransition()
 {
 	delete cover;

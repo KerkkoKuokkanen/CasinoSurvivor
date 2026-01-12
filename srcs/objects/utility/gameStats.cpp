@@ -18,6 +18,8 @@ StatBoosters GetStats() {
 
 void SetMoney(int m) {
 	money = m;
+	if (money < 0)
+		money = 0;
 }
 
 int GetMoney() {

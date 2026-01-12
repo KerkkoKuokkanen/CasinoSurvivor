@@ -18,7 +18,10 @@ int CommonEnemy::ApplyDamage(t_Point pos, float size, int damage, unsigned int n
 		return (0);
 	if (!multiHit && std::find(knownBullets.begin(), knownBullets.end(), name) != knownBullets.end())
 		return (0);
-	health -= damage;
+	if (type != 0)
+		health -= damage;
+	else
+		health -= 1;
 	if (health <= 0)
 		return (2);
 	knownBullets.push_back(name);

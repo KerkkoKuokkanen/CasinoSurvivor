@@ -128,16 +128,22 @@ bool BulletManager::CheckEnemyHit(std::vector<CommonEnemy*> &enemies, int index)
 		{
 			grid->ApplyForce(enemies[i]->position, 0.05f, 0.2f);
 			enemies[i]->EnemyHit(bullets[index].damage, bullets[index].pos, bullets[index].name);
-			CreateDamageNumber(enemies[i]->position, bullets[index].damage);
+			if (enemies[i]->type != 0)
+				CreateDamageNumber(enemies[i]->position, bullets[index].damage);
+			else
+				CreateDamageNumber(enemies[i]->position, 1);
 		}
 		else if (ret == 2)
 		{
 			soundKey3 = RePlaySound("death1", 4.5f, 0, soundKey3);
-			grid->ApplyForce(enemies[i]->position, 0.1f, 0.4f);
+			grid->ApplyForce(enemies[i]->position, enemies[i]->deathForce, enemies[i]->deathForceRadius);
 			shaker->CreateCameraShake(0.05f);
 			CreateDeathParticles(enemies[i]);
 			enemies[i]->KillEnemy();
-			CreateDamageNumber(enemies[i]->position, bullets[index].damage);
+			if (enemies[i]->type != 0)
+				CreateDamageNumber(enemies[i]->position, bullets[index].damage);
+			else
+				CreateDamageNumber(enemies[i]->position, 1);
 			chips->CreateChips(enemies[i]->position, enemies[i]->currency);
 		}
 		bullets[index].active = false;

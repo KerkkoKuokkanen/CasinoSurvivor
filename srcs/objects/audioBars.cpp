@@ -93,6 +93,18 @@ void AudioBars::GrabBarHeights()
 
 void AudioBars::Update()
 {
+	if (fade)
+	{
+		while (fadeTime > 0.042f)
+		{
+			musicVolume -= 1;
+			fadeTime -= 0.042f;
+		}
+		if (musicVolume < 0)
+			musicVolume = 0;
+		Mix_Volume(RESERVED_CHANNEL, musicVolume);
+		fadeTime += DeltaTimeReal();
+	}
 	GrabBarHeights();
 	if (grid != NULL)
 		grid->GiveFrequencies(localBarHeights);
@@ -102,8 +114,14 @@ void AudioBars::Start()
 {
 	grid = (FloorGrid*)self->GetComponent("FloorGrid");
 	ReserveChannel(RESERVED_CHANNEL);
-	Mix_Volume(RESERVED_CHANNEL, 28);
+	musicVolume = 28;
+	Mix_Volume(RESERVED_CHANNEL, musicVolume);
 	PlayMusic("testmus2");
+}
+
+void AudioBars::FadeMusic()
+{
+	fade = true;
 }
 
 void AudioBars::StopMusic()

@@ -1,6 +1,7 @@
 
 #include "chipManager.h"
 #include "audio.h"
+#include "gameStats.h"
 
 #define DRAG_IN_TIME 0.6f
 #define DAMPING std::pow(0.9, 60)
@@ -105,11 +106,14 @@ void ChipManager::CreateChips(t_Point pos, int amount)
 void ChipManager::UpdateChips()
 {
 	std::vector<t_Box> colors = {{0.8f, 0.8f, 0.8f, 0.9f}, {0.7f, 0.7f, 0.7f, 0.9f}, {0.9f, 0.9f, 0.9f, 0.9f}};
+	bool playerActive = player->self->active;
 	bool shooting = player->shooting;
 	float alphaScale = 1.0f / 0.125f;
 	t_Box hb = player->GetHitBox();
 	for (int i = 0; i < chips.size(); i++)
 	{
+		if (playerActive == false)
+			chips[i].dragged = false;
 		if (chips[i].collected)
 		{
 			float alpha = fmin(1.0f, alphaScale * chips[i].collectTime);
@@ -123,7 +127,7 @@ void ChipManager::UpdateChips()
 			}
 			continue ;
 		}
-		if (!shooting && chips[i].dragged == false)
+		if (!shooting && chips[i].dragged == false && playerActive)
 		{
 			chips[i].dragTime -= DeltaTime();
 			if (chips[i].dragTime <= 0.0f)
@@ -167,6 +171,8 @@ void ChipManager::UpdateChips()
 			soundKey = RePlaySound("chip", 12.0f, 0, soundKey);
 			chips[i].collected = true;
 			chips[i].img->SetColor(0.8f, 0.8f, 0.8f, 1.0f);
+			int money = GetMoney();
+			SetMoney(money + chips[i].amount);
 			continue ;
 		}
 		if (chips[i].chipLifeTime < 3.0f && chips[i].dragged == false)

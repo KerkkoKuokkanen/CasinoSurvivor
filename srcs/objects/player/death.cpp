@@ -2,6 +2,7 @@
 #include "death.h"
 #include "audio.h"
 #include "mouse.h"
+#include "gameStats.h"
 
 #define DEATH_TIME 0.6f
 #define DEATH_ADD_TIME 0.1f
@@ -69,7 +70,10 @@ void Death::Update()
 	GameOverAnim();
 	DeathAnimation();
 	if (trans->time <= 0.26f)
+	{
+		ResetStats();
 		RoomSwitch(GetCurrentRoom(), {});
+	}
 	if (player->GetPosition().y < -14.0f && !done)
 	{
 		float x = player->GetPosition().x;

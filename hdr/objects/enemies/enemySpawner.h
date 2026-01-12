@@ -16,6 +16,7 @@
 class EnemySpawner : public CustomComponent
 {
 	private:
+		bool exitSpawned = false;
 		std::queue<EnemyData> enemyQueue = {};
 		std::vector<CommonEnemy*> enemies = {};
 		CameraShake *shake = NULL;

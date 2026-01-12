@@ -15,6 +15,7 @@ class ScreenTransition : public CustomComponent
 		bool done = false;
 		ScreenTransition();
 		~ScreenTransition();
+		void SetTransitionType(int type);
 		void Init(void *data, size_t size) override;
 		void Update() override;
 		void EngineUpdate() override;
