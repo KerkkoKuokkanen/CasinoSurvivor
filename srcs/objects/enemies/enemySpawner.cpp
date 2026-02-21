@@ -69,7 +69,7 @@ void EnemySpawner::Start()
 	enemies.reserve(MAX_ENEMIES);
 	time = 0.0;
 	std::vector<EnemyData> enems;
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 40; i++)
 	{
 		EnemyData add;
 		add.health = 12;
@@ -77,7 +77,7 @@ void EnemySpawner::Start()
 		add.currency = 3;
 		add.independent = false;
 		add.speed = 1.0f;
-		add.time = float_rand() * 1.0f;
+		add.time = float_rand() * 25.0f;
 		add.type = 1;
 		add.size = 2.0f;
 		enems.push_back(add);

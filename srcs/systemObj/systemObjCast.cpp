@@ -9,21 +9,21 @@ size_t SystemObj::FetchComponentDataSize()
 	if (componentSaveFetchIndex >= components.size())
 		return (0);
 	int i = componentSaveFetchIndex;
-	switch (components[i].classType)
+	switch (components[i]->classType)
 	{
 		case n_ComponentTypes::IMAGE_CLASS:
 		{
-			Image *img = (Image*)components[i].obj;
+			Image *img = (Image*)components[i]->obj;
 			return (img->GetSaveDataSize());
 		}
 		case n_ComponentTypes::STRUCTURE_CLASS:
 		{
-			Structure *structure = (Structure*)components[i].obj;
+			Structure *structure = (Structure*)components[i]->obj;
 			return (structure->GetSaveDataSize());
 		}
 		default:
 		{
-			CustomComponent *cust = (CustomComponent*)components[i].obj;
+			CustomComponent *cust = (CustomComponent*)components[i]->obj;
 			return (cust->GetComponentSize());
 		}
 	}
@@ -35,11 +35,11 @@ void *SystemObj::FetchComponentSaveData(void *buffer, size_t bufferSize, size_t 
 	if (componentSaveFetchIndex >= components.size())
 		return (NULL);
 	int i = componentSaveFetchIndex;
-	switch (components[i].classType)
+	switch (components[i]->classType)
 	{
 		case n_ComponentTypes::IMAGE_CLASS:
 		{
-			Image *img = (Image*)components[i].obj;
+			Image *img = (Image*)components[i]->obj;
 			void *ret = img->CollectSaveData(buffer, bufferSize, compSize);
 			if (ret == NULL)
 				return (NULL);
@@ -47,7 +47,7 @@ void *SystemObj::FetchComponentSaveData(void *buffer, size_t bufferSize, size_t 
 		}
 		case n_ComponentTypes::STRUCTURE_CLASS:
 		{
-			Structure *structure = (Structure*)components[i].obj;
+			Structure *structure = (Structure*)components[i]->obj;
 			void *ret = structure->CollectSaveData(buffer, bufferSize, compSize);
 			if (ret == NULL)
 				return (NULL);
@@ -55,7 +55,7 @@ void *SystemObj::FetchComponentSaveData(void *buffer, size_t bufferSize, size_t 
 		}
 		default:
 		{
-			CustomComponent *cust = (CustomComponent*)components[i].obj;
+			CustomComponent *cust = (CustomComponent*)components[i]->obj;
 			void *ret = cust->CollectSaveData(compSize);
 			return (ret);
 		}
@@ -67,7 +67,7 @@ void SystemObj::LastUpdateSystemObj()
 {
 	for (int i = 0; i < components.size(); i++)
 	{
-		switch (components[i].classType)
+		switch (components[i]->classType)
 		{
 			case n_ComponentTypes::IMAGE_CLASS:
 				break ;
@@ -75,7 +75,7 @@ void SystemObj::LastUpdateSystemObj()
 				break ;
 			default :
 			{
-				CustomComponent *cust = (CustomComponent*)components[i].obj;
+				CustomComponent *cust = (CustomComponent*)components[i]->obj;
 				if (EngineModeOn())
 					cust->EngineUpdate();
 				else
@@ -98,11 +98,11 @@ void SystemObj::UpdateSystemObj()
 	std::vector<t_sysComponent*> objs = {};
 	for (int i = 0; i < components.size(); i++)
 	{
-		if (components[i].classType == n_ComponentTypes::IMAGE_CLASS ||
-			components[i].classType == n_ComponentTypes::NO_CLASS ||
-			components[i].classType == n_ComponentTypes::STRUCTURE_CLASS)
+		if (components[i]->classType == n_ComponentTypes::IMAGE_CLASS ||
+			components[i]->classType == n_ComponentTypes::NO_CLASS ||
+			components[i]->classType == n_ComponentTypes::STRUCTURE_CLASS)
 			continue ;
-		objs.push_back(&components[i]);
+		objs.push_back(components[i].get());
 	}
 	std::sort(objs.begin(), objs.end(),
 				[](const t_sysComponent *a, const t_sysComponent *b) {
@@ -152,10 +152,10 @@ void SystemObj::DeleteComponentOwn(void *component, uint32_t classType)
 	{
 		for (int i = 0; i < components.size(); i++)
 		{
-			if (components[i].uniqueKey == classType)
+			if (components[i]->uniqueKey == classType)
 			{
-				classType = components[i].classType;
-				component = components[i].obj;
+				classType = components[i]->classType;
+				component = components[i]->obj;
 				components.erase(components.begin() + i);
 				break ;
 			}
@@ -192,7 +192,7 @@ SystemObj::~SystemObj()
 {
 	deleting = true;
 	for (int i = 0; i < components.size(); i++)
-		DeleteComponentOwn(components[i].obj, components[i].classType);
+		DeleteComponentOwn(components[i]->obj, components[i]->classType);
 	if (controller == NULL)
 		return ;
 	SysEnv *env = (SysEnv*)controller;

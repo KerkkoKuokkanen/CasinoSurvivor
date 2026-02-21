@@ -1,11 +1,12 @@
 
 #include "bjBetter.h"
-#include "stats.h"
+#include "gameStats.h"
 #include "mouse.h"
 #include "mouseOver.h"
 
 BjBetter::BjBetter()
 {
+	componentWeight = -1.0f;
 	chip1 = new Image("chip1", {0.0f, 0.0f, 1.0f, 1.0f}, 0.0f, 2);
 	chip5 = new Image("chip5", {0.0f, 0.0f, 1.0f, 1.0f}, 0.0f, 2);
 	chip10 = new Image("chip10", {0.0f, 0.0f, 1.0f, 1.0f}, 0.0f, 2);
@@ -22,27 +23,35 @@ BjBetter::BjBetter()
 	chip500->position = {2.0f, -5.0f};
 	bet->position = {2.9f, -5.0f};
 	clear->position = {-2.9f, -5.0f};
-	buttons[0].SetButtonState(0, chip1, {0.6f, 0.6f, 0.6f, 1.0f});
+	imgs[0] = chip1;
+	imgs[1] = chip5;
+	imgs[2] = chip10;
+	imgs[3] = chip50;
+	imgs[4] = chip100;
+	imgs[5] = chip500;
+	imgs[6] = bet;
+	imgs[7] = clear;
+	buttons[0].SetButtonState(0, chip1, {0.5f, 0.5f, 0.5f, 1.0f});
 	buttons[0].SetButtonState(3, chip1, {0.1f, 0.1f, 0.1f, 1.0f});
 	buttons[0].SetButtonState(1, chip1, {0.9f, 0.9f, 0.9f, 1.0f});
 	buttons[0].SetButtonState(2, chip1, {0.75, 0.75f, 0.75f, 1.0f});
-	buttons[1].SetButtonState(0, chip5, {0.6f, 0.6f, 0.6f, 1.0f});
+	buttons[1].SetButtonState(0, chip5, {0.5f, 0.5f, 0.5f, 1.0f});
 	buttons[1].SetButtonState(3, chip5, {0.1f, 0.1f, 0.1f, 1.0f});
 	buttons[1].SetButtonState(1, chip5, {0.9f, 0.9f, 0.9f, 1.0f});
 	buttons[1].SetButtonState(2, chip5, {0.75f, 0.75f, 0.75f, 1.0f});
-	buttons[2].SetButtonState(0, chip10, {0.6f, 0.6f, 0.6f, 1.0f});
+	buttons[2].SetButtonState(0, chip10, {0.5f, 0.5f, 0.5f, 1.0f});
 	buttons[2].SetButtonState(3, chip10, {0.1f, 0.1f, 0.1f, 1.0f});
 	buttons[2].SetButtonState(1, chip10, {0.9f, 0.9f, 0.9f, 1.0f});
 	buttons[2].SetButtonState(2, chip10, {0.75f, 0.75f, 0.75f, 1.0f});
-	buttons[3].SetButtonState(0, chip50, {0.6f, 0.6f, 0.6f, 1.0f});
+	buttons[3].SetButtonState(0, chip50, {0.5f, 0.5f, 0.5f, 1.0f});
 	buttons[3].SetButtonState(3, chip50, {0.1f, 0.1f, 0.1f, 1.0f});
 	buttons[3].SetButtonState(1, chip50, {0.9f, 0.9f, 0.9f, 1.0f});
 	buttons[3].SetButtonState(2, chip50, {0.75f, 0.75f, 0.75f, 1.0f});
-	buttons[4].SetButtonState(0, chip100, {0.6f, 0.6f, 0.6f, 1.0f});
+	buttons[4].SetButtonState(0, chip100, {0.5f, 0.5f, 0.5f, 1.0f});
 	buttons[4].SetButtonState(3, chip100, {0.1f, 0.1f, 0.1f, 1.0f});
 	buttons[4].SetButtonState(1, chip100, {0.9f, 0.9f, 0.9f, 1.0f});
 	buttons[4].SetButtonState(2, chip100, {0.75f, 0.75f, 0.75f, 1.0f});
-	buttons[5].SetButtonState(0, chip500, {0.6f, 0.6f, 0.6f, 1.0f});
+	buttons[5].SetButtonState(0, chip500, {0.5f, 0.5f, 0.5f, 1.0f});
 	buttons[5].SetButtonState(3, chip500, {0.1f, 0.1f, 0.1f, 1.0f});
 	buttons[5].SetButtonState(1, chip500, {0.9f, 0.9f, 0.9f, 1.0f});
 	buttons[5].SetButtonState(2, chip500, {0.75f, 0.75f, 0.75f, 1.0f});
@@ -70,7 +79,7 @@ BjBetter::~BjBetter()
 
 void BjBetter::ManageChips()
 {
-	uint64_t chips = GetPlayerChips();
+	uint64_t chips = GetMoney();
 	buttons[0].notUsable = false;
 	buttons[1].notUsable = false;
 	buttons[2].notUsable = false;
@@ -80,21 +89,44 @@ void BjBetter::ManageChips()
 	buttons[6].notUsable = false;
 	buttons[7].notUsable = false;
 	if (chips < 1)
+	{
+		chosen = -1;
 		buttons[0].notUsable = true;
+	}
 	if (chips < 5)
+	{
+		chosen = (chosen >= 1) ? -1 : chosen;
 		buttons[1].notUsable = true;
+	}
 	if (chips < 10)
+	{
+		chosen = (chosen >= 2) ? -1 : chosen;
 		buttons[2].notUsable = true;
+	}
 	if (chips < 50)
+	{
+		chosen = (chosen >= 3) ? -1 : chosen;
 		buttons[3].notUsable = true;
+	}
 	if (chips < 100)
+	{
+		chosen = (chosen >= 4) ? -1 : chosen;
 		buttons[4].notUsable = true;
+	}
 	if (chips < 500)
+	{
+		chosen = (chosen >= 5) ? -1 : chosen;
 		buttons[5].notUsable = true;
-	if (chipsBet == 0)
+	}
+	if (bets->GetBetAmounts() == 0)
 	{
 		buttons[6].notUsable = true;
 		buttons[7].notUsable = true;
+	}
+	else
+	{
+		buttons[6].notUsable = false;
+		buttons[7].notUsable = false;
 	}
 }
 
@@ -108,10 +140,60 @@ void BjBetter::ManageButtons()
 	buttons[5].Update();
 	buttons[6].Update();
 	buttons[7].Update();
+	for (int i = 0; i <= 5; i++)
+	{
+		if (buttons[i].clickState == 3 || chosen == i)
+		{
+			buttons[i].SetButtonState(0, imgs[i], {1.0f, 1.0f, 1.0f, 1.0f});
+			chosen = i;
+		}
+		else
+			buttons[i].SetButtonState(0, imgs[i], {0.5f, 0.5f, 0.5f, 1.0f});
+	}
+	if (buttons[6].clickState == 3)
+	{
+		roundStartTime = 1.4f;
+		roundActive = true;
+	}
+	else if (buttons[7].clickState == 3)
+	{
+		int money = GetMoney();
+		SetMoney(money + bets->GetBetAmounts());
+		bets->ResetBetAmounts();
+	}
+}
+
+void BjBetter::Start()
+{
+	bets = (BjBets*)self->GetComponent("BjBets");
+}
+
+void BjBetter::ManageRound()
+{
+	chosen = -1;
+	if (roundStartTime <= 0.0f)
+		return ;
+	float yScale = 2.5f / 1.4f;
+	for (int i = 0; i < 8; i++)
+	{
+		buttons[i].notUsable = true;
+		t_Point pos = imgs[i]->position;
+		pos.y = -5.0f - (2.5f - yScale * roundStartTime);
+		imgs[i]->position = pos;
+	}
+	roundStartTime -= DeltaTime();
 }
 
 void BjBetter::Update()
 {
+	if (roundActive)
+	{
+		ManageRound();
+		return ;
+	}
+	if (MouseKeyPressed(n_MouseKeys::MOUSE_RIGHT))
+		chosen = -1;
+	bets->chosen = chosen;
 	if (!active)
 		return ;
 	ManageChips();

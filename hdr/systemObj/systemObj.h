@@ -65,7 +65,7 @@ class SystemObj
 		bool active = true;			//Active for if the components are updated inside the object
 		void *controller = NULL;	//Controller is the environment, top of the chain
 		float weight = 0.0f;		//lower weight objects are updated first
-		std::vector<t_sysComponent> components = {};		//Components of the object
+		std::vector<std::unique_ptr<t_sysComponent>> components = {};		//Components of the object
 
 		SystemObj();			//Constructor, automatically assigns object to environment
 		bool GetDeleting() {return (deleting);};		//Helper function for internal stuff

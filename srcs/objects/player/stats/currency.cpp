@@ -42,9 +42,9 @@ void Currency::Update()
 	{
 		int amount = rounding(numAddTimer / numAddTime);
 		int n = chipNumber->num + amount;
-		if (amount < 0 && chipAmount - amount < 0)
-			n = 0;
-		if (n > chipAmount && amount >= 0)
+		if (amount < 0 && n <= chipAmount)
+			n = chipAmount;
+		else if (n >= chipAmount && amount >= 0)
 			n = chipAmount;
 		delete chipNumber;
 		std::string nn = std::to_string(n);

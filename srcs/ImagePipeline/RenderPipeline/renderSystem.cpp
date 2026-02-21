@@ -324,7 +324,7 @@ RenderObj::~RenderObj()
 	if (self != NULL)
 	{
 		SystemObj *obj = (SystemObj*)self;
-		obj->RemoveComponent(id);
+		obj->RemoveComponent(id, true);
 	}
 	universalRenderingSystem.RemoveRenderObject(layer, uniqueKey);
 }

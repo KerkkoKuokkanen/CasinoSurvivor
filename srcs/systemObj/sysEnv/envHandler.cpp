@@ -138,8 +138,8 @@ void ClearSysEnv()
 {
 	if (currentEnvironment == NULL)
 		return ;
-	ClearSoundSystem();
 	currentEnvironment->Clear();
+	ClearSoundSystem();
 }
 
 void DestroyObject(SystemObj *obj)

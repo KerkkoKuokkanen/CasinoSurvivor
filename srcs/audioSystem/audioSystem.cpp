@@ -325,7 +325,8 @@ static void SoundSystemClearing()
 		return ;
 	for (int i = 0; i < CHANNEL_AMOUNT; i++)
 	{
-		channels[i].occupied = false;
+		if (channels[i].reserved)
+			continue ;
 		channels[i].paused = false;
 		Mix_HaltChannel(i);
 	}
@@ -343,6 +344,12 @@ void ReserveChannel(int channel)
 {
 	std::lock_guard<std::mutex> guard(moddingQueueLock);
 	channels[channel].reserved = true;
+}
+
+void UnReserveChannel(int channel)
+{
+	std::lock_guard<std::mutex> guard(moddingQueueLock);
+	channels[channel].reserved = false;
 }
 
 void InitAudio()

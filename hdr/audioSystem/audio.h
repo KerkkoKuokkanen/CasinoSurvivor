@@ -25,6 +25,7 @@ void ReusmeSound(uint64_t key);
 void StopSound(uint64_t key);
 void ChangeVolume(float volume, uint64_t key);
 void ReserveChannel(int channel);
+void UnReserveChannel(int channel);
 
 void ChangeSystemVolume(float volume);
 void ClearSoundSystem();

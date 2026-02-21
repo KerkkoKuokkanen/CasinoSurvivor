@@ -74,8 +74,8 @@ void ObjectEditor::SetImageTexture(SystemObj *obj)
 	std::string searched = searchBuffer;
 	if (ImGui::Button("Set Texure"))
 	{
-		t_sysComponent com = obj->components[compIndex];
-		Image *img = (Image*)com.obj;
+		t_sysComponent *com = obj->components[compIndex].get();
+		Image *img = (Image*)com->obj;
 		img->SetTexture(searched);
 	}
 	ImGui::NewLine();

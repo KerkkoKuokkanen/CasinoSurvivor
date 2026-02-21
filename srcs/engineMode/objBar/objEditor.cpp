@@ -32,14 +32,14 @@ void ObjectEditor::SecureDeleteButton(SystemObj *obj)
 		{
 			if (selectWindow == n_ComponentTypes::IMAGE_CLASS)
 			{
-				t_sysComponent comp = obj->components[compIndex];
-				Image *img = (Image*)comp.obj;
+				t_sysComponent *comp = obj->components[compIndex].get();
+				Image *img = (Image*)comp->obj;
 				delete (img);
 			}
 			else
 			{
-				t_sysComponent comp = obj->components[compIndex];
-				CustomComponent *cust = (CustomComponent*)comp.obj;
+				t_sysComponent *comp = obj->components[compIndex].get();
+				CustomComponent *cust = (CustomComponent*)comp->obj;
 				delete (cust);
 			}
 			selectWindow = 0;
@@ -60,11 +60,11 @@ void ObjectEditor::ComponentSelector(SystemObj *obj)
 		selectWindow = -1;
 	for (int i = 0; i < obj->components.size(); i++)
 	{
-		t_sysComponent comp = obj->components[i];
-		std::string str = comp.type + " " + std::to_string(i);
+		t_sysComponent *comp = obj->components[i].get();
+		std::string str = comp->type + " " + std::to_string(i);
 		if (ImGui::Button(str.c_str()))
 		{
-			selectWindow = comp.classType;
+			selectWindow = comp->classType;
 			compIndex = i;
 		}
 	}
@@ -135,8 +135,8 @@ void ObjectEditor::LayerManager()
 
 void ObjectEditor::TransformDropDown(SystemObj *obj)
 {
-	t_sysComponent com = obj->components[compIndex];
-	Image *img = (Image*)com.obj;
+	t_sysComponent *com = obj->components[compIndex].get();
+	Image *img = (Image*)com->obj;
 	const char* options[] = { "Camera", "Static"};
 	int currentIndex = img->GetTransformType();
 	if (currentIndex == n_TransformTypes::TRANSFORM_CAMERA)
@@ -161,8 +161,8 @@ void ObjectEditor::TransformDropDown(SystemObj *obj)
 
 void ObjectEditor::LayerSelectionDropDown(SystemObj *obj)
 {
-	t_sysComponent com = obj->components[compIndex];
-	Image *img = (Image*)com.obj;
+	t_sysComponent *com = obj->components[compIndex].get();
+	Image *img = (Image*)com->obj;
 	std::vector<std::tuple<int, int>> data = universalRenderingSystem.GetLayerData();
 	const char* options[] = { "No Sort", "Y-Sort", "Depth Sort", "Depth & Y-Sort", "Text Layer", "Multi Sprite"};
 	int currentIndex = 0;
@@ -198,8 +198,8 @@ void ObjectEditor::UpdateImageClass(SystemObj *obj)
 		selectWindow = 0;
 	ImGui::SameLine();
 	ImGui::Text("Image:");
-	t_sysComponent com = obj->components[compIndex];
-	Image *img = (Image*)com.obj;
+	t_sysComponent *com = obj->components[compIndex].get();
+	Image *img = (Image*)com->obj;
 
 	t_Point pos = img->position;
 	float a = img->angle;

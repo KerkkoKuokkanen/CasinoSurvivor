@@ -5,7 +5,6 @@
 
 Health::Health()
 {
-	ResetStats();	//Temporarily here
 	health = GetHealth();
 	pill = new Image("pill2", {9.32f, 5.0f, 1.1f, 1.1f}, 0.0f, 13);
 	pill->SetTransformType(n_TransformTypes::TRANSFORM_STATIC);

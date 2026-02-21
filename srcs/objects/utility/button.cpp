@@ -3,9 +3,9 @@
 #include "mouseOver.h"
 #include "mouse.h"
 
-void Button::SetButtonFunction(void (*fun)())
+void Button::SetButtonFunction(std::function<void()> func)
 {
-	callFunc = fun;
+	f = func;
 }
 
 void Button::SetButtonState(int state, Image *img, t_Box color)
@@ -72,8 +72,8 @@ void Button::Update()
 		states[3].button->drawActive = false;
 		states[2].button->drawActive = true;
 		states[2].button->SetColor(color.x, color.y, color.w, color.h);
-		if (clickState == 3 && callFunc != NULL)
-			callFunc();
+		if (clickState == 3 && f != NULL)
+			f();
 		return ;
 	}
 	t_Box color = states[0].color;

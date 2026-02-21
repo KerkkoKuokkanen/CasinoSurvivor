@@ -13,8 +13,8 @@ ExitEnemy::ExitEnemy()
 	health = 4;
 	independent = true;
 	type = 0;
-	deathForce = 0.725f;
-	deathForceRadius = 1.35f;
+	deathForce = 0.25f;
+	deathForceRadius = 0.8f;
 	hitbox = {11.5f - HIT_BOX_HALF, 0.0f - HIT_BOX_HALF, HIT_BOX_DIM, HIT_BOX_DIM};
 	img = new Image("exitSign", {11.5f, 0.0f, 3.0f, 3.0f}, 0.0f, 7);
 	img->SetColor(0.9f, 0.9f, 0.9f, 1.0f);
@@ -51,14 +51,14 @@ void ExitEnemy::UpdateDeath()
 	}
 	if (!particlesDone)
 	{
-		PlaySound("glass", 9.0f, 0);
+		PlaySound("glass", 7.0f, 0);
 		musicVol->FadeMusic();
 		death->position = img->position;
 		death->drawActive = true;
-		std::vector<t_Box> colors = {{0.21f, 0.72f, 0.07f, 1.0f},
-									{0.21f * 0.5f, 0.72f * 0.5f, 0.07f * 0.5f, 1.0f},
-									{0.21f * 0.75f, 0.72f * 0.75f, 0.07f * 0.75f, 1.0f},
-									{0.21f * 1.25f, 0.72f * 1.25f, 0.07f * 1.25f, 1.0f}};
+		std::vector<t_Box> colors = {{0.21f * 0.8f, 0.72f * 0.8f, 0.07f * 0.8f, 1.0f},
+									{0.21f * 0.6f, 0.72f * 0.6f, 0.07f * 0.6f, 1.0f},
+									{0.21f * 0.4f, 0.72f * 0.4f, 0.07f * 0.4f, 1.0f},
+									{0.21f * 0.2f, 0.72f * 0.2f, 0.07f * 0.2f, 1.0f}};
 		particlesDone = true;
 		parts->AddParticles(position, 2.0f, {1.0f, 0.0f}, 1.0f * PI, colors, 1.5f, 6.0f, 1000, "everyColor", 0.06f, 0.08f, 1.2f, 2.2f, 1.0f);
 	}

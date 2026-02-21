@@ -5,7 +5,7 @@
 //No objects or allocation
 
 static int health = 0;
-static int money = 0;
+static int money = 100;
 static StatBoosters stats = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 
 void SetStats(StatBoosters st) {

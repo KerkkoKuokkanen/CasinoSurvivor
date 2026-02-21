@@ -12,10 +12,9 @@ bool MouseOverImage(Image *img)
 	if (sur == NULL)
 		return (false);
 	t_Point mous = GetMouseXY();
-	mous.y *= (9.0f / 16.0f);
 	float dx = img->dimentions.x * 0.5f;
 	float dy = img->dimentions.y * 0.5f;
-	t_Point pos = {img->position.x - dx, img->position.y * (9.0f / 16.0f) - dy};
+	t_Point pos = {img->position.x - dx, img->position.y - dy};
 	float usex = mous.x - pos.x;
 	float usey = mous.y - pos.y;
 	if (usey < 0.0f || usey > img->dimentions.y)

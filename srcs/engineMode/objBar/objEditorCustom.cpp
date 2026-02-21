@@ -108,10 +108,10 @@ void ObjectEditor::UpdateMultiSprite(SystemObj *obj)
 {
 	if (ImGui::Button("<<"))
 		selectWindow = 0;
-	t_sysComponent comp = obj->components[compIndex];
+	t_sysComponent *comp = obj->components[compIndex].get();
 	ImGui::SameLine();
 	ImGui::Text("SpriteBatch");
-	SpriteBatch *batch = (SpriteBatch*)comp.obj;
+	SpriteBatch *batch = (SpriteBatch*)comp->obj;
 	std::string texture = GetSelectedTexture();
 	
 	static float width = 1.0f;
@@ -200,15 +200,15 @@ void ObjectEditor::UpdateMultiSprite(SystemObj *obj)
 
 void ObjectEditor::UpdateCustomComponent(SystemObj *obj)
 {
-	t_sysComponent comp = obj->components[compIndex];
-	if (comp.type == "SpriteBatch")
+	t_sysComponent *comp = obj->components[compIndex].get();
+	if (comp->type == "SpriteBatch")
 		return (UpdateMultiSprite(obj));
 	if (ImGui::Button("<<"))
 		selectWindow = 0;
 	ImGui::SameLine();
-	std::string used = comp.type + ".";
+	std::string used = comp->type + ".";
 	ImGui::Text("%s", used.c_str());
-	CustomComponent *cust = (CustomComponent*)comp.obj;
+	CustomComponent *cust = (CustomComponent*)comp->obj;
 	for (int i = 0; i < cust->inputFields.size(); i++)
 	{
 		std::string name = std::get<0>(cust->inputFields[i]);

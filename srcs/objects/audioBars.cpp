@@ -140,4 +140,5 @@ AudioBars::~AudioBars()
 	Mix_UnregisterEffect(RESERVED_CHANNEL, channelEffectCallback);
 	if (g_fftConfig)
 		kiss_fftr_free(g_fftConfig);
+	UnReserveChannel(RESERVED_CHANNEL);
 }

@@ -5,9 +5,9 @@
 #include "envHandler.h"
 #include "image.h"
 
-static bool SortComponents(const t_sysComponent& a, const t_sysComponent& b)
+static bool SortComponents(const std::unique_ptr<t_sysComponent>& a, const std::unique_ptr<t_sysComponent>& b)
 {
-	return a.classType > b.classType;
+	return a->classType > b->classType;
 }
 
 static uint64_t GenerateRandomNumber()
@@ -41,10 +41,11 @@ void *SystemObj::AddImageComponent()
 {
 	Image *img = new Image("everyColor", {0.0f, 0.0f, 1.0f, 1.0f}, 0.0f, 0);
 	uint32_t id = GetUniqueKeyForSysComponent();
-	t_sysComponent add = {id, n_ComponentTypes::IMAGE_CLASS, false, "image", img};
-	components.push_back(add);
-	std::sort(components.begin(), components.end(), SortComponents);
+	auto newComp = std::make_unique<t_sysComponent>();
+	*newComp = {id, n_ComponentTypes::IMAGE_CLASS, false, "image", img};
 	GiveComponentId(img, n_ComponentTypes::IMAGE_CLASS, id);
+	components.push_back(std::move(newComp));
+	std::sort(components.begin(), components.end(), SortComponents);
 	return (img);
 }
 
@@ -71,59 +72,63 @@ SystemObj::SystemObj()
 
 void *SystemObj::AddComponent(const std::string component, void *initData, size_t initDataSize)
 {
-	t_sysComponent add;
-	add.started = false;
-	add.uniqueKey = GetUniqueKeyForSysComponent();
-	add.obj = (void*)CreateComponent(component);
-	CustomComponent *comp = (CustomComponent*)add.obj;
+	auto newComp = std::make_unique<t_sysComponent>();
+	newComp->started = false;
+	newComp->uniqueKey = GetUniqueKeyForSysComponent();
+	newComp->obj = (void*)CreateComponent(component);
+	CustomComponent *comp = (CustomComponent*)newComp->obj;
 	comp->self = this;
 	if (initDataSize == 0)
 		comp->Init(NULL, 0);
 	else
 		comp->Init(initData, initDataSize);
-	add.type = component;
-	add.classType = GetComponentKeyWithName(component);
-	components.push_back(add);
+	newComp->type = component;
+	newComp->classType = GetComponentKeyWithName(component);
+	GiveComponentId(newComp->obj, newComp->classType, newComp->uniqueKey);
+	void *obj = newComp->obj;
+	components.push_back(std::move(newComp));
 	std::sort(components.begin(), components.end(), SortComponents);
-	GiveComponentId(add.obj, add.classType, add.uniqueKey);
-	return (add.obj);
+	return (obj);
 }
 
 void *SystemObj::AddComponent(const std::string component)
 {
 	if (component == "image")
 		return (AddImageComponent());
-	t_sysComponent add;
-	add.started = false;
-	add.uniqueKey = GetUniqueKeyForSysComponent();
-	add.obj = (void*)CreateComponent(component);
-	if (add.obj == NULL)
+	auto newComp = std::make_unique<t_sysComponent>();
+	newComp->started = false;
+	newComp->uniqueKey = GetUniqueKeyForSysComponent();
+	newComp->obj = (void*)CreateComponent(component);
+	if (newComp->obj == NULL)
 		return (NULL);
-	CustomComponent *comp = (CustomComponent*)add.obj;
+	CustomComponent *comp = (CustomComponent*)newComp->obj;
 	comp->self = this;
 	comp->Init(NULL, 0);
-	add.type = component;
-	add.classType = GetComponentKeyWithName(component);
-	components.push_back(add);
+	newComp->type = component;
+	newComp->classType = GetComponentKeyWithName(component);
+	GiveComponentId(newComp->obj, newComp->classType, newComp->uniqueKey);
+	void *obj = newComp->obj;
+	components.push_back(std::move(newComp));
 	std::sort(components.begin(), components.end(), SortComponents);
-	GiveComponentId(add.obj, add.classType, add.uniqueKey);
-	return (add.obj);
+	return (obj);
 }
 
 void *SystemObj::AddComponent(void *component, const std::string name)
 {
+	auto newComp = std::make_unique<t_sysComponent>();
 	uint32_t classType = GetComponentKeyWithName(name);
 	if (name == IMAGE_COMPONENT)
 		classType = n_ComponentTypes::IMAGE_CLASS;
 	else if (name == STRUCTURE_COMPONENT)
 		classType = n_ComponentTypes::STRUCTURE_CLASS;
 	uint32_t id = GetUniqueKeyForSysComponent();
-	t_sysComponent add = {id, classType, false, name, component};
+	*newComp = {id, classType, false, name, component};
 	CustomComponent *comp = (CustomComponent*)component;
+	comp->self = this;
 	comp->Init(NULL, 0);
-	components.push_back(add);
-	std::sort(components.begin(), components.end(), SortComponents);
 	GiveComponentId(component, classType, id);
+	components.push_back(std::move(newComp));
+	std::sort(components.begin(), components.end(), SortComponents);
 	return (component);
 }
 
@@ -131,10 +136,11 @@ void *SystemObj::AddComponent(void *component, uint32_t classType)
 {
 	uint32_t id = GetUniqueKeyForSysComponent();
 	const std::string name = GetComponentNameWithKey(classType);
-	t_sysComponent add = {id, classType, false, name, component};
-	components.push_back(add);
-	std::sort(components.begin(), components.end(), SortComponents);
+	auto newComp = std::make_unique<t_sysComponent>();
+	*newComp = {id, classType, false, name, component};
 	GiveComponentId(component, classType, id);
+	components.push_back(std::move(newComp));
+	std::sort(components.begin(), components.end(), SortComponents);
 	return (component);
 }
 
@@ -142,8 +148,8 @@ void *SystemObj::GetComponent(const std::string &component)
 {
 	for (int i = 0; i < components.size(); i++)
 	{
-		if (component == components[i].type)
-			return (components[i].obj);
+		if (component == components[i]->type)
+			return (components[i]->obj);
 	}
 	return (NULL);
 }
@@ -153,8 +159,8 @@ std::vector<void*> SystemObj::GetComponents(const std::string &component)
 	std::vector<void*> ret = {};
 	for (int i = 0; i < components.size(); i++)
 	{
-		if (component == components[i].type)
-			ret.push_back(components[i].obj);
+		if (component == components[i]->type)
+			ret.push_back(components[i]->obj);
 	}
 	return (ret);
 }
@@ -170,14 +176,14 @@ uint32_t SystemObj::FetchComponentClassType()
 {
 	if (componentSaveFetchIndex >= components.size())
 		return (n_ComponentTypes::NO_CLASS);
-	return (components[componentSaveFetchIndex].classType);
+	return (components[componentSaveFetchIndex]->classType);
 }
 
 uint32_t SystemObj::FetchComponentUniqueKey()
 {
 	if (componentSaveFetchIndex >= components.size())
 		return (0);
-	return (components[componentSaveFetchIndex].uniqueKey);
+	return (components[componentSaveFetchIndex]->uniqueKey);
 }
 
 uint16_t SystemObj::GetSaveableRoom()
@@ -207,7 +213,7 @@ void SystemObj::PopComponent(uint32_t id)
 {
 	for (int i = 0; i < components.size(); i++)
 	{
-		if (components[i].uniqueKey == id)
+		if (components[i]->uniqueKey == id)
 		{
 			components.erase(components.begin() + i);
 			return ;
@@ -224,7 +230,7 @@ void SystemObj::RemoveComponent(uint32_t id, bool destructed)
 		return ;
 	for (int i = 0; i < components.size(); i++)
 	{
-		if (components[i].uniqueKey == id)
+		if (components[i]->uniqueKey == id)
 		{
 			components.erase(components.begin() + i);
 			return ;
