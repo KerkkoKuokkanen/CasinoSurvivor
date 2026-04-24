@@ -3,6 +3,7 @@
 
 void Number::SetColor(float r, float g, float b, float a)
 {
+	col = {r, g, b, a};
 	for (Image *i : images)
 		i->SetColor(r, g, b, a);
 }
@@ -20,6 +21,7 @@ Number::Number(t_Point position, std::string number, float size, t_Box color, fl
 	Number::position = position;
 	float add = 0.1f;
 	num = std::stoi(number);
+	col = color;
 	for (int i = 0; i < number.length(); i++)
 	{
 		char n = number[i];

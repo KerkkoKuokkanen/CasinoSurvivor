@@ -26,7 +26,9 @@ class BjBetter : public CustomComponent
 		void ManageChips();
 		void ManageButtons();
 		void ManageRound();
+		void ManageRoundStart();
 		float roundStartTime = 1.4f;
+		float roundEndTime = 0.0f;
 		int chosen = -1;
 	public:
 		bool roundActive = false;
@@ -34,8 +36,7 @@ class BjBetter : public CustomComponent
 		~BjBetter();
 		void Start() override;
 		void Update() override;
-		void Activate();
-		void Deactivate();
+		void Activate(int win);
 };
 
 REGISTER_COMPONENT(BjBetter);

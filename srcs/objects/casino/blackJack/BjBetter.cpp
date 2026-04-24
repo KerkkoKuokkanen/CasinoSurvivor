@@ -184,11 +184,38 @@ void BjBetter::ManageRound()
 	roundStartTime -= DeltaTime();
 }
 
+void BjBetter::ManageRoundStart()
+{
+	chosen = -1;
+	float yScale = 2.5f / 0.8f;
+	for (int i = 0; i < 8; i++)
+	{
+		buttons[i].notUsable = true;
+		t_Point pos = imgs[i]->position;
+		pos.y = -7.5f + (2.5f - yScale * roundEndTime);
+		imgs[i]->position = pos;
+	}
+	roundEndTime -= DeltaTime();
+	if (roundEndTime <= 0.0f)
+	{
+		for (int i = 0; i < 8; i++)
+		{
+			t_Point pos = imgs[i]->position;
+			imgs[i]->position = {pos.x, -5.0f};
+		}
+	}
+}
+
 void BjBetter::Update()
 {
 	if (roundActive)
 	{
 		ManageRound();
+		return ;
+	}
+	if (roundEndTime > 0.0f)
+	{
+		ManageRoundStart();
 		return ;
 	}
 	if (MouseKeyPressed(n_MouseKeys::MOUSE_RIGHT))
@@ -200,28 +227,11 @@ void BjBetter::Update()
 	ManageButtons();
 }
 
-void BjBetter::Activate()
+void BjBetter::Activate(int win)
 {
-	active = true;
-	chip1->drawActive = true;
-	chip5->drawActive = true;
-	chip10->drawActive = true;
-	chip50->drawActive = true;
-	chip100->drawActive = true;
-	chip500->drawActive = true;
-	bet->drawActive = true;
-	clear->drawActive = true;
+	roundEndTime = 0.8f;
+	bets->ResetBetAmounts();
+	int money = GetMoney();
+	SetMoney(money + win);
 }
 
-void BjBetter::Deactivate()
-{
-	active = false;
-	chip1->drawActive = false;
-	chip5->drawActive = false;
-	chip10->drawActive = false;
-	chip50->drawActive = false;
-	chip100->drawActive = false;
-	chip500->drawActive = false;
-	bet->drawActive = false;
-	clear->drawActive = false;
-}
